@@ -59,16 +59,16 @@ body.is-opening-page .app-shell { padding-bottom: max(24px, env(safe-area-inset-
 .panel-header, .pack-panel .panel-header { padding: 0 0 22px; margin: 0; border-bottom: 1px solid #b9a3f414; gap: 24px; }
 .pack-panel .panel-header { border-bottom: 0; padding-bottom: 6px; }
 .chapter-heading { display: flex; align-items: center; gap: 16px; }
-.chapter-number { font-family: 'Cormorant Garamond', serif; font-size: 45px; font-weight: 600; color: #c4b0ed; line-height: 1; }
+.chapter-number { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 600; color: #c4b0ed; line-height: 1; }
 .section-eyebrow { color: #a89abd; font-size: 8px; font-weight: 500; letter-spacing: .2em; line-height: 1.6; }
 p.section-eyebrow { margin: 0 0 5px; }
-.panel-title { font-size: 18px; font-weight: 400; letter-spacing: .04em; text-transform: none; color: #eee5ff; }
+.panel-title { font-size: 15px; font-weight: 400; letter-spacing: .04em; text-transform: none; color: #eee5ff; }
 .panel-title::before { content: none; }
 .edition-tag { display: flex; gap: 10px; align-items: center; color: #a99cbd; font-size: 8px; letter-spacing: .2em; }
 .edition-tag > span { font-size: 20px; color: #b8a1df; }
 .opening-stage { padding: 0; isolation: isolate; }
 .opening-header { position: absolute; margin: 0; }
-.card-stage { height: clamp(340px, calc(100svh - 232px), 700px); min-height: 340px; }
+.card-stage { height: clamp(340px, calc(100svh - 263px), 700px); min-height: 340px; }
 .booster-pack { width: min(28vw, 300px, calc((100svh - 290px) * .65)); min-width: 230px; translate: -50% -50%; }
 .booster-pack:hover { filter: none; }
 .booster-pack::after { background: #070511bf; box-shadow: 0 0 65px #b396ef1c; }
@@ -93,49 +93,55 @@ p.section-eyebrow { margin: 0 0 5px; }
 .stage-guide p { font: italic 13px 'Cormorant Garamond', serif; color: #8e819e; border-top: 1px solid #b9a3f41a; padding-top: 14px; }
 .pack-panel.has-revealed .stage-guide { opacity: 0; visibility: hidden; }
 .pack-panel.has-revealed .celestial-orbit { opacity: .45; }
-/* The New Pack button sits right under the pack. */
+/* The Open seal sits right under the pack. */
 .ritual-caption { display: flex; justify-content: center; margin: 8px 0 0; }
 
-/* New Pack — an arcane seal: a ring of light that keeps circling the rim, a breathing
-   aura in the same colours, twinkling sparks, gold-shimmer lettering and pulsing star runes. */
+/* Arcane seals (Open, New Pack): round medallions with a ring of light circling the rim,
+   a slowly turning ring of mathematical runes, a breathing aura, twinkling sparks and
+   gold-shimmer lettering. */
 @property --arcane-turn { syntax: '<angle>'; inherits: true; initial-value: 0deg; }
-.action-button {
+.arcane-seal {
+    --seal-size: 92px;
     --arcane-spectrum: conic-gradient(from var(--arcane-turn), #f7dc9c, #b98bff 18%, #6fd6ff 34%, #f2b5ff 50%, #9f7bff 66%, #ffe2a6 82%, #f7dc9c);
-    position: relative; inset: auto; flex: none; isolation: isolate; overflow: visible;
-    display: inline-grid; place-items: center;
-    min-width: 224px; height: 54px; padding: 0;
-    border: 0; border-radius: 999px; outline-offset: 6px;
-    background: none; box-shadow: none; color: #fff; text-shadow: none;
-    font: 600 13px/1 'Cinzel', serif; letter-spacing: .26em; text-transform: uppercase;
+    position: relative; flex: none; isolation: isolate;
+    display: grid; place-items: center;
+    width: var(--seal-size); height: var(--seal-size); padding: 0;
+    border: 0; border-radius: 50%; outline-offset: 6px;
+    background: radial-gradient(circle, #160f30 0 60%, #0c0920 100%);
+    box-shadow: 0 14px 34px #0008;
+    color: #fff; font: 600 13px/1.3 'Cinzel', serif; letter-spacing: .22em; text-transform: uppercase;
     cursor: pointer;
     animation: arcaneTurn 5s linear infinite;
-    transition: transform .35s cubic-bezier(.34, 1.56, .64, 1), filter .3s;
+    transition: transform .4s cubic-bezier(.34, 1.56, .64, 1), opacity .35s, visibility .35s;
 }
 /* The circling rim: the spectrum masked down to a hairline ring. */
-.action-button::before {
-    content: ''; position: absolute; inset: 0; z-index: 2; padding: 1.5px; border-radius: inherit;
+.arcane-seal::before {
+    content: ''; position: absolute; inset: 0; z-index: 3; padding: 1.5px; border-radius: inherit;
     background: var(--arcane-spectrum);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor; mask-composite: exclude;
-    font-size: 0; text-shadow: none; pointer-events: none;
+    pointer-events: none;
 }
-.action-button::after { content: none; }
-.arcane-aura { position: absolute; inset: -5px; z-index: -1; border-radius: inherit; background: var(--arcane-spectrum); filter: blur(16px); opacity: .5; animation: arcaneBreath 3.4s ease-in-out infinite; transition: opacity .3s, filter .3s; pointer-events: none; }
+.arcane-aura { position: absolute; inset: -6px; z-index: -1; border-radius: 50%; background: var(--arcane-spectrum); filter: blur(16px); opacity: .5; animation: arcaneBreath 3.4s ease-in-out infinite; transition: opacity .3s, filter .3s; pointer-events: none; }
+/* A ring of mathematical symbols turning slowly between the rim and the core. */
+.seal-runes { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; overflow: visible; fill: #ead7a6; stroke: none; opacity: .85; animation: orbitTurn 40s linear infinite reverse; pointer-events: none; }
+.seal-runes circle { fill: none; stroke: #c9a9ff; stroke-width: .6; stroke-dasharray: 1 3; opacity: .75; }
+.seal-runes text { font: 7px 'Cormorant Garamond', 'Cambria Math', serif; }
 .arcane-core {
-    position: relative; z-index: 1; overflow: hidden;
-    display: flex; align-items: center; justify-content: center; gap: 15px;
-    width: 100%; height: 100%; padding: 0 28px; border-radius: inherit;
+    position: absolute; inset: 17%; z-index: 2; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+    border-radius: 50%;
     background:
-        radial-gradient(80% 120% at 50% 130%, #8a5cf0a6, transparent 62%),
-        radial-gradient(60% 90% at 50% -25%, #e9d3ff33, transparent 70%),
-        repeating-conic-gradient(from 0deg at 50% 50%, #ffffff05 0 6deg, transparent 6deg 12deg),
-        linear-gradient(180deg, #1d1440, #0c0920);
-    box-shadow: inset 0 0 22px #8d63ff4d, inset 0 1px #ffffff2b;
+        radial-gradient(80% 80% at 50% 115%, #8a5cf0b3, transparent 65%),
+        radial-gradient(70% 60% at 50% -10%, #e9d3ff38, transparent 70%),
+        repeating-conic-gradient(from 0deg, #ffffff06 0 6deg, transparent 6deg 12deg),
+        radial-gradient(circle, #251a50, #0f0b25);
+    box-shadow: inset 0 0 16px #8d63ff59, inset 0 0 0 1px #e9d3ff2e;
 }
 /* A slow sheen that drifts across the seal every few seconds. */
 .arcane-core::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 38%, #fff2d633 50%, transparent 62%); transform: translateX(-140%); animation: arcaneSheen 5.5s ease-in-out infinite; pointer-events: none; }
 .button-label {
-    padding-top: 2px;
+    padding-left: .22em; text-align: center;
     background: linear-gradient(90deg, #e9cf92, #fff8e4 25%, #dcc6ff 50%, #fff8e4 75%, #e9cf92);
     background-size: 200% 100%;
     -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -143,10 +149,9 @@ p.section-eyebrow { margin: 0 0 5px; }
     animation: arcaneShimmer 6s linear infinite;
 }
 .arcane-rune { display: grid; place-items: center; color: #f6dc9f; filter: drop-shadow(0 0 5px #f6dc9f); animation: arcaneRune 2.6s ease-in-out infinite; }
-.arcane-rune:last-child { animation-delay: -1.3s; }
-.arcane-rune svg { width: 11px; height: 11px; fill: currentColor; stroke: none; }
-/* Sparks: tiny four-point twinkles orbiting just outside the rim. */
-.arcane-sparks { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.arcane-rune svg { width: 9px; height: 9px; fill: currentColor; stroke: none; }
+/* Sparks: tiny four-point twinkles just outside the rim. */
+.arcane-sparks { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
 .arcane-sparks i {
     position: absolute; width: 11px; height: 11px; opacity: 0;
     background:
@@ -155,17 +160,21 @@ p.section-eyebrow { margin: 0 0 5px; }
         linear-gradient(transparent, #ffe9b8, transparent) center / 1px 100% no-repeat;
     animation: arcaneSpark 3.2s ease-in-out infinite;
 }
-.arcane-sparks i:nth-child(1) { left: 9%; top: -9px; animation-delay: 0s; }
-.arcane-sparks i:nth-child(2) { left: 33%; bottom: -10px; animation-delay: -.6s; scale: .75; }
-.arcane-sparks i:nth-child(3) { left: 58%; top: -11px; animation-delay: -1.3s; scale: .9; }
-.arcane-sparks i:nth-child(4) { right: 9%; bottom: -9px; animation-delay: -1.9s; }
-.arcane-sparks i:nth-child(5) { right: -11px; top: 30%; animation-delay: -2.4s; scale: .8; }
-.arcane-sparks i:nth-child(6) { left: -11px; top: 46%; animation-delay: -2.9s; scale: .7; }
-.action-button:hover:not(:disabled) { transform: translateY(-2px) scale(1.03); }
-.action-button:hover:not(:disabled) .arcane-aura { opacity: .9; filter: blur(20px); }
-.action-button:hover:not(:disabled) .arcane-sparks i { animation-duration: 1.6s; }
-.action-button:active:not(:disabled) { transform: scale(.96); }
-.action-button:disabled { opacity: .45; cursor: wait; color: #fff; background: none; border: 0; }
+.arcane-sparks i:nth-child(1) { left: -2%; top: 12%; animation-delay: 0s; }
+.arcane-sparks i:nth-child(2) { right: -4%; top: 20%; animation-delay: -.6s; scale: .75; }
+.arcane-sparks i:nth-child(3) { left: 46%; top: -13%; animation-delay: -1.3s; scale: .9; }
+.arcane-sparks i:nth-child(4) { right: 4%; bottom: -3%; animation-delay: -1.9s; }
+.arcane-sparks i:nth-child(5) { left: 8%; bottom: -6%; animation-delay: -2.4s; scale: .8; }
+.arcane-sparks i:nth-child(6) { right: -13%; top: 55%; animation-delay: -2.9s; scale: .7; }
+.arcane-seal:hover:not(:disabled) { transform: scale(1.07); }
+.arcane-seal:hover:not(:disabled) .arcane-aura { opacity: .95; filter: blur(20px); }
+.arcane-seal:hover:not(:disabled) .arcane-sparks i { animation-duration: 1.6s; }
+.arcane-seal:active:not(:disabled) { transform: scale(.94); }
+.arcane-seal:disabled { opacity: .45; cursor: wait; }
+.seal-open { font-size: 14px; letter-spacing: .24em; }
+.pack-panel.has-revealed .seal-open { opacity: 0; visibility: hidden; transform: scale(.85); }
+/* New Pack lives in the empty left margin of the stage, mirroring the tier list on the right. */
+.seal-new { --seal-size: 124px; position: absolute; left: 3%; top: 50%; translate: 0 -50%; z-index: 6; font-size: 13px; }
 @keyframes arcaneTurn { to { --arcane-turn: 360deg; } }
 @keyframes arcaneBreath { 0%, 100% { scale: .97; } 50% { scale: 1.04; } }
 @keyframes arcaneSheen { 0%, 55% { transform: translateX(-140%); } 100% { transform: translateX(140%); } }
@@ -253,17 +262,19 @@ p.section-eyebrow { margin: 0 0 5px; }
     .panel-header, .pack-panel .panel-header { padding-bottom: 16px; gap: 12px; }
     .pack-panel .panel-header { padding-bottom: 4px; }
     .chapter-heading { gap: 12px; }
-    .chapter-number { font-size: 36px; }
+    .chapter-number { font-size: 31px; }
     .section-eyebrow { font-size: 6px; letter-spacing: .15em; }
-    .panel-title { font-size: 14px; letter-spacing: .015em; }
+    .panel-title { font-size: 12.5px; letter-spacing: .015em; }
     .edition-tag { font-size: 6px; gap: 5px; letter-spacing: .1em; }
     .edition-tag > span { font-size: 16px; }
     .stage-guide { display: none; }
-    .card-stage { height: clamp(300px, calc(100svh - 242px), 480px); min-height: 300px; }
+    .card-stage { height: clamp(300px, calc(100svh - 271px), 480px); min-height: 300px; }
     .booster-pack { width: min(55vw, 265px, calc((100svh - 345px) * .65)); min-width: 175px; translate: -50% -50%; }
     .celestial-orbit { width: min(94vw, 480px); }
     .ritual-caption { margin-top: 6px; }
-    .ritual-caption .action-button { min-width: 204px; height: 50px; padding: 0; font-size: 12px; }
+    .seal-open { --seal-size: 84px; }
+    .seal-new { --seal-size: 68px; left: 0; top: calc(100% + 14px); translate: none; font-size: 9px; letter-spacing: .16em; }
+    .seal-new .arcane-rune { display: none; }
     /* Phones get an icon-only Hand button so it never collides with New Pack. */
     .command-bar { padding: 0 max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
     .hand-control-button { width: 44px; height: 44px; min-height: 44px; padding: 0; gap: 0; justify-content: center; }
@@ -293,14 +304,14 @@ p.section-eyebrow { margin: 0 0 5px; }
     .glitch { font-size: 25px; }
     .brand-eyebrow { font-size: 5px; }
     .archive-counter > svg { display: none; }
-    .ritual-caption .action-button { min-width: 188px; }
-    .arcane-core { padding: 0 20px; gap: 12px; }
+    .seal-open { --seal-size: 80px; }
+    .seal-new { --seal-size: 62px; top: calc(100% + 15px); }
     .edition-tag { font-size: 5px; }
 }
 @media (max-height: 700px) and (min-width: 769px) {
     .hero-copy { min-height: 78px; }
     .page-stack { margin-top: 6px; }
-    .card-stage { height: clamp(320px, calc(100svh - 226px), 460px); min-height: 320px; }
+    .card-stage { height: clamp(320px, calc(100svh - 257px), 460px); min-height: 320px; }
     .booster-pack { min-width: 210px; }
     .celestial-orbit { width: 420px; }
 }
@@ -331,9 +342,9 @@ p.section-eyebrow { margin: 0 0 5px; }
 @media (min-width: 769px) {
     .spread-fan { container-type: size; }
     .spread-fan .spread-card {
-        --fan-card-width: clamp(130px, min(19cqw, (100cqh - 40px) / 2.25), 260px);
+        --fan-card-width: clamp(130px, min(19cqw, (100cqh - 40px) / 2), 260px);
         --fan-card-height: calc(var(--fan-card-width) * 1.5);
-        --fan-reach: max(0px, min(calc(50cqw - var(--fan-card-width) * .72 - 12px), calc(var(--fan-card-width) * 1.5)));
+        --fan-reach: max(0px, min(calc(46cqw - 140px - var(--fan-card-width) * .65), calc(var(--fan-card-width) * 1.5)));
         --ty: calc((var(--fan-position, 0) * var(--fan-position, 0) * .14 - .09) * var(--fan-card-height));
         top: 50%;
     }

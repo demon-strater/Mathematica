@@ -12,7 +12,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="stylesheet" href="style.css?v=20261115-1">
-  <link rel="stylesheet" href="sanctum.css?v=20261115-4">
+  <link rel="stylesheet" href="sanctum.css?v=20261115-5">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -76,16 +76,19 @@
           </div>
           <aside class="stage-guide"><span class="section-eyebrow">FIVE TIERS OF DISCOVERY</span><ol><li class="tier-legendary"><span>V</span>Legendary<i></i></li><li class="tier-platinum"><span>IV</span>Platinum<i></i></li><li class="tier-gold"><span>III</span>Gold<i></i></li><li class="tier-silver"><span>II</span>Silver<i></i></li><li class="tier-bronze"><span>I</span>Bronze<i></i></li></ol><p>Every formula holds a story.</p></aside>
           <div class="rip-instructions hidden" id="ripInstructions"></div>
+          <button id="newPackButton" class="arcane-seal seal-new" type="button" aria-label="New Pack · 새 카드팩 준비">
+            <span class="arcane-aura" aria-hidden="true"></span>
+            <svg class="seal-runes" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="sealRunesNew" d="M50 9a41 41 0 1 1 0 82a41 41 0 1 1 0-82"/></defs><circle cx="50" cy="50" r="36.5"/><text><textPath href="#sealRunesNew" textLength="257" lengthAdjust="spacing">∑ ∫ ∂ π ∞ √ ∇ Δ φ θ λ Ω ∮ ℵ ✦</textPath></text></svg>
+            <span class="arcane-core"><span class="arcane-rune" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 1 2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6Z"/></svg></span><span class="button-label">New<br>Pack</span></span>
+            <span class="arcane-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          </button>
         </div>
         <div class="ritual-caption">
-          <button id="newPackButton" class="action-button" type="button" aria-label="New Pack · 새 카드팩 준비">
+          <button id="openPackButton" class="arcane-seal seal-open" type="button" aria-label="Open · 카드팩 열기">
             <span class="arcane-aura" aria-hidden="true"></span>
+            <svg class="seal-runes" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="sealRunesOpen" d="M50 9a41 41 0 1 1 0 82a41 41 0 1 1 0-82"/></defs><circle cx="50" cy="50" r="36.5"/><text><textPath href="#sealRunesOpen" textLength="257" lengthAdjust="spacing">✦ ∮ ℵ Ω λ θ φ Δ ∇ √ ∞ π ∂ ∫ ∑</textPath></text></svg>
+            <span class="arcane-core"><span class="arcane-rune" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 1 2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6Z"/></svg></span><span class="button-label">Open</span></span>
             <span class="arcane-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
-            <span class="arcane-core">
-              <span class="arcane-rune" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 1 2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6Z"/></svg></span>
-              <span class="button-label">New Pack</span>
-              <span class="arcane-rune" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 1 2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6Z"/></svg></span>
-            </span>
           </button>
         </div>
         </section>
@@ -234,7 +237,7 @@
     </article>
   </template>
 
-  <script src="script.js?v=20261115-2"></script>
+  <script src="script.js?v=20261115-3"></script>
   <script type="module" src="hand-tracking.js?v=20261115-1"></script>
 </body>
 </html>

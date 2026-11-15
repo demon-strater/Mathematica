@@ -1251,6 +1251,8 @@ function updateRitualUI(phase) {
     const newPack = document.getElementById("newPackButton");
     newPack.disabled = opening;
     newPack.setAttribute("aria-busy", String(opening));
+    // Open only makes sense while a sealed pack is waiting; CSS hides it once the cards are out.
+    document.getElementById("openPackButton").disabled = opening || revealed;
 }
 
 function setRipInstructions(text) {
@@ -1658,6 +1660,14 @@ function snapOpenPack() {
     requestAnimationFrame(finishTear);
 }
 
+// The Open seal under the pack runs the same tear-and-reveal as tapping the pack itself.
+function openPackFromButton() {
+    const packButton = document.getElementById("ripPackButton");
+    if (packButton.disabled || packButton.hidden || state.isOpening || state.isSnappingOpen || !state.pendingPack.length) return;
+    updatePackOpenState(Math.max(state.ripProgress, RIP_SNAP_THRESHOLD));
+    snapOpenPack();
+}
+
 function bindPackDrag() {
     const packButton = document.getElementById("ripPackButton");
     let pointerDown = false;
@@ -1771,6 +1781,7 @@ function bindMobileFullscreen() {
 function bindEvents() {
     bindMobileFullscreen();
     document.getElementById("newPackButton").addEventListener("click", prepareNewPack);
+    document.getElementById("openPackButton").addEventListener("click", openPackFromButton);
     document.getElementById("inventorySort")?.addEventListener("change", renderInventory);
     document.querySelectorAll(".page-tab").forEach((button) => {
         button.addEventListener("click", () => {
