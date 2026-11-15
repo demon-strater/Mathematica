@@ -278,6 +278,20 @@ body:not(.is-opening-page) .command-note { visibility: hidden; }
 .spread-card.card-slot-1 { --fan-position: -.333333; }
 .spread-card.card-slot-2 { --fan-position: .333333; }
 
+/* Laptops and desktops: size the fan by the stage's height as well as its width, so the
+   dealt cards stay inside the stage instead of covering the header and New Pack button.
+   The arc (--ty) and spread (--fan-reach) scale with the card so the fan keeps its shape. */
+@media (min-width: 769px) {
+    .spread-fan { container-type: size; }
+    .spread-fan .spread-card {
+        --fan-card-width: clamp(130px, min(19cqw, (100cqh - 40px) / 1.85), 260px);
+        --fan-card-height: calc(var(--fan-card-width) * 1.5);
+        --fan-reach: max(0px, min(calc(50cqw - var(--fan-card-width) * .72 - 12px), calc(var(--fan-card-width) * 1.5)));
+        --ty: calc((var(--fan-position, 0) * var(--fan-position, 0) * .14 - .09) * var(--fan-card-height));
+        top: 50%;
+    }
+}
+
 @media (max-width: 768px) {
     .spread-fan .spread-card {
         --fan-card-width: min(28vw, 140px);
