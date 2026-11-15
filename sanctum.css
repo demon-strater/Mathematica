@@ -19,13 +19,7 @@ body::before {
     opacity: .35;
     mask-image: linear-gradient(transparent, #000 20%, #000 75%, transparent);
 }
-body::after {
-    inset: 12px;
-    border: 1px solid rgba(185, 163, 244, .09);
-    background: none;
-    opacity: 1;
-    z-index: -1;
-}
+body::after { content: none; }
 .ambient-sky {
     position: fixed;
     inset: 0;
@@ -36,9 +30,10 @@ body::after {
 svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 button { touch-action: manipulation; }
 button:focus-visible, a:focus-visible, .tcg-card:focus-visible { outline: 2px solid #dfcaff; outline-offset: 5px; }
-.app-shell { width: min(var(--content-width), calc(100% - 96px)); padding: 0 0 134px; }
+.app-shell { width: min(var(--content-width), calc(100% - 96px)); padding: 0 0 88px; }
+body.is-opening-page .app-shell { padding-bottom: max(24px, env(safe-area-inset-bottom)); }
 .hero { padding: 0; }
-.hero-copy { display: grid; grid-template-columns: 1fr auto 1fr; gap: 32px; min-height: 112px; padding: 0; border-bottom: 1px solid var(--etching); text-align: left; }
+.hero-copy { display: grid; grid-template-columns: 1fr auto 1fr; gap: 32px; min-height: 112px; padding: 0; border-bottom: 0; text-align: left; }
 .hero-copy::before { content: none; }
 .brand-lockup { display: flex; align-items: center; gap: 15px; }
 .brand-seal { display: grid; place-items: center; width: 43px; height: 43px; color: #c7b5ee; border: 1px solid #b59bdc5c; transform: rotate(45deg); outline: 1px solid #b59bdc21; outline-offset: 5px; }
@@ -62,6 +57,7 @@ button:focus-visible, a:focus-visible, .tcg-card:focus-visible { outline: 2px so
 .panel { padding: 28px; background: linear-gradient(135deg, #1f1b343d, #0d0d1c6b); border: 1px solid var(--etching); box-shadow: none; }
 .pack-panel { padding: 0; background: transparent; border: 0; }
 .panel-header, .pack-panel .panel-header { padding: 0 0 22px; margin: 0; border-bottom: 1px solid #b9a3f414; gap: 24px; }
+.pack-panel .panel-header { border-bottom: 0; }
 .chapter-heading { display: flex; align-items: center; gap: 16px; }
 .chapter-number { font-family: 'Cormorant Garamond', serif; font-size: 45px; font-weight: 600; color: #c4b0ed; line-height: 1; }
 .section-eyebrow { color: #a89abd; font-size: 8px; font-weight: 500; letter-spacing: .2em; line-height: 1.6; }
@@ -72,7 +68,7 @@ p.section-eyebrow { margin: 0 0 5px; }
 .edition-tag > span { font-size: 20px; color: #b8a1df; }
 .opening-stage { padding: 0; isolation: isolate; }
 .opening-header { position: absolute; margin: 0; }
-.card-stage { height: clamp(340px, calc(100svh - 380px), 650px); min-height: 340px; }
+.card-stage { height: clamp(340px, calc(100svh - 318px), 650px); min-height: 340px; }
 .booster-pack { width: min(28vw, 300px, calc((100svh - 350px) * .65)); min-width: 230px; translate: -50% -50%; }
 .booster-pack:hover { filter: none; }
 .booster-pack::after { background: #070511bf; box-shadow: 0 0 65px #b396ef1c; }
@@ -106,44 +102,38 @@ p.section-eyebrow { margin: 0 0 5px; }
 .stage-guide p { font: italic 13px 'Cormorant Garamond', serif; color: #8e819e; border-top: 1px solid #b9a3f41a; padding-top: 14px; }
 .pack-panel.has-revealed .stage-story, .pack-panel.has-revealed .stage-guide { opacity: 0; visibility: hidden; }
 .pack-panel.has-revealed .celestial-orbit { opacity: .45; }
-.ritual-caption { display: flex; justify-content: center; align-items: center; gap: 22px; text-align: center; margin: 4px 0 0; }
+/* The ritual status sits under the pack with the New Pack button right beneath it. */
+.ritual-caption { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; margin: 6px 0 0; }
 .ritual-caption .section-eyebrow { font-size: 8px; color: #c2addf; letter-spacing: .23em; }
-.ritual-caption p { margin: 8px 0 0; font-size: 11px; color: #a69ab8; line-height: 1.7; word-break: keep-all; }
-.ritual-line { height: 1px; width: 90px; background: linear-gradient(90deg, transparent, #baa2db61); position: relative; }
-.ritual-line:last-child { rotate: 180deg; }
-.ritual-line::after { content: ''; position: absolute; width: 4px; height: 4px; background: #bda5e0; right: 0; top: -1.5px; rotate: 45deg; }
 
-/* One consistent thumb-friendly command dock. */
-.command-bar { position: fixed; bottom: 0; left: 0; right: 0; min-height: 106px; padding: 18px max(48px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)); z-index: 10019; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px; background: linear-gradient(180deg, #0c0c19eb, #080914fa); backdrop-filter: blur(22px); border-top: 1px solid var(--etching); }
-.command-bar::before { content: ''; position: absolute; height: 1px; width: 200px; top: -1px; left: 50%; translate: -50% 0; background: linear-gradient(90deg, transparent, #c4a8fa9c, transparent); }
-.command-note { display: flex; align-items: center; gap: 14px; color: #847993; font-size: 7px; letter-spacing: .18em; line-height: 1.9; }
-.command-note > span:first-child { font-size: 28px; color: #ae99c7; }
-.command-note strong { font-weight: 400; color: #baaccb; }
-.command-edition { justify-self: end; color: #80728f; font-size: 7px; letter-spacing: .15em; }
-.command-edition span { padding: 0 10px; }
-.command-actions { display: flex; align-items: stretch; gap: 12px; }
-.action-button, .hand-control-button { position: relative; inset: auto; display: flex; align-items: center; justify-content: center; min-height: 58px; gap: 14px; border-radius: 12px; padding: 10px 18px; border: 1px solid #bd9be561; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: .025em; text-transform: none; text-shadow: none; cursor: pointer; animation: none; transition: transform .16s, background .2s, border-color .2s, box-shadow .2s; }
-.action-button { min-width: 234px; color: #fcf8ff; background: linear-gradient(135deg, #7960ac, #5c468d 55%, #49386f); box-shadow: inset 0 1px #ead7ff52, inset 0 -2px #20163166, 0 6px 25px #0004; }
+.action-button { position: relative; inset: auto; flex: none; display: flex; align-items: center; justify-content: center; min-width: 228px; min-height: 52px; gap: 13px; border-radius: 14px; padding: 8px 16px 8px 15px; border: 1px solid #bd9be561; color: #fcf8ff; background: linear-gradient(135deg, #7960ac, #5c468d 55%, #49386f); box-shadow: inset 0 1px #ead7ff52, inset 0 -2px #20163166, 0 6px 25px #0004, 0 0 34px #8a6bd022; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: .025em; text-transform: none; text-shadow: none; cursor: pointer; animation: none; transition: transform .16s, background .2s, border-color .2s, box-shadow .2s; }
 .action-button::before, .action-button::after { content: none; }
-.action-button > span:nth-child(2), .hand-control-button > span { text-align: left; }
-.action-button small, .hand-control-button small { display: block; margin-top: 5px; font-size: 9px; font-weight: 400; letter-spacing: .01em; color: #d0bddf; }
+.action-button > span:nth-child(2) { text-align: left; }
+.action-button small { display: block; margin-top: 4px; font-size: 9px; font-weight: 400; letter-spacing: .01em; color: #d0bddf; }
 .button-icon { display: grid; place-items: center; }
-.button-icon svg { width: 23px; height: 23px; }
-.button-arrow { margin-left: 16px; font-size: 20px; font-weight: 400; color: #e1cef7; }
-.hand-control-button { min-width: 172px; background: linear-gradient(135deg, #242035, #171522); border-color: #a994c635; color: #dbd0ed; box-shadow: inset 0 1px #ddd0f00c, 0 6px 20px #0002; backdrop-filter: none; }
-.hand-control-button > svg { color: #c0acd9; }
-.hand-control-button small { color: #9d8eaf; }
-.hand-control-dot { flex-shrink: 0; width: 6px; height: 6px; margin-left: 6px; background: #71677f; box-shadow: none; }
-.action-button:hover:not(:disabled) { transform: translateY(-2px); background: linear-gradient(135deg, #8b70c0, #6b519f 55%, #55417d); border-color: #d0b2fa; box-shadow: inset 0 1px #ead7ff52, 0 8px 28px #9570d22e; }
-.hand-control-button:hover:not(:disabled) { transform: translateY(-2px); background: #30263f; border-color: #ad94cf8c; box-shadow: 0 8px 24px #0003; }
-.action-button:active:not(:disabled), .hand-control-button:active:not(:disabled) { transform: translateY(1px) scale(.975); }
-.hand-control-button.is-active { background: linear-gradient(135deg, #243c3c, #18272f); border-color: #8bd9c37d; box-shadow: inset 0 1px #d0ffef14, 0 0 24px #70ffcc0b; }
-.hand-control-button.is-active svg, .hand-control-button.is-active small { color: #a6ddcc; }
-.hand-control-button[aria-busy="true"] .hand-control-dot { background: transparent; width: 12px; height: 12px; border: 1px solid #d9c5f63b; border-top-color: #d9c5f6; animation: orbitTurn 1s linear infinite; }
-body:not(.is-opening-page) #newPackButton { display: none; }
-.hand-status { display: block !important; right: 24px; bottom: 310px; padding: 14px 18px; border: 1px solid var(--etching); line-height: 1.8; background: #171322f5; }
+.button-icon svg { width: 22px; height: 22px; }
+.button-arrow { margin-left: auto; padding-left: 14px; font-size: 19px; font-weight: 400; color: #e1cef7; }
+.action-button:hover:not(:disabled) { transform: translateY(-2px); background: linear-gradient(135deg, #8b70c0, #6b519f 55%, #55417d); border-color: #d0b2fa; box-shadow: inset 0 1px #ead7ff52, 0 8px 28px #9570d22e, 0 0 40px #8a6bd033; }
+.action-button:active:not(:disabled) { transform: translateY(1px) scale(.975); }
+
+/* No dock: the footer is a click-through overlay holding a small Hand button at the bottom right. */
+.command-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10019; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 max(24px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(28px, env(safe-area-inset-left)); pointer-events: none; }
+.command-note { display: flex; align-items: center; gap: 14px; color: #847993; font-size: 7px; letter-spacing: .18em; line-height: 1.9; }
+.command-note > span:first-child { font-size: 22px; color: #ae99c7; }
+.command-note strong { font-weight: 400; color: #baaccb; }
+body:not(.is-opening-page) .command-note { visibility: hidden; }
+.hand-control-button { position: relative; inset: auto; margin-left: auto; pointer-events: auto; display: flex; align-items: center; gap: 7px; min-width: 0; min-height: 40px; padding: 0 14px 0 12px; border-radius: 999px; border: 1px solid #a994c640; background: #1a1727d9; color: #dbd0ed; box-shadow: 0 6px 20px #0004; backdrop-filter: blur(14px); font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: none; cursor: pointer; animation: none; transition: transform .16s, background .2s, border-color .2s, box-shadow .2s; }
+.hand-control-button > svg { width: 17px; height: 17px; color: #c0acd9; }
+.hand-control-button small { display: none; }
+.hand-control-dot { flex-shrink: 0; width: 5px; height: 5px; margin-left: 2px; background: #71677f; box-shadow: none; }
+.hand-control-button:hover:not(:disabled) { transform: translateY(-2px); background: #2b2339; border-color: #ad94cf8c; box-shadow: 0 8px 24px #0005; }
+.hand-control-button:active:not(:disabled) { transform: translateY(1px) scale(.97); }
+.hand-control-button.is-active { background: linear-gradient(135deg, #243c3ce6, #18272fe6); border-color: #8bd9c37d; box-shadow: 0 0 20px #70ffcc14; }
+.hand-control-button.is-active svg { color: #a6ddcc; }
+.hand-control-button[aria-busy="true"] .hand-control-dot { background: transparent; width: 10px; height: 10px; border: 1px solid #d9c5f63b; border-top-color: #d9c5f6; animation: orbitTurn 1s linear infinite; }
+.hand-status { display: block !important; right: max(24px, env(safe-area-inset-right)); bottom: calc(max(20px, env(safe-area-inset-bottom)) + 246px); padding: 14px 18px; border: 1px solid var(--etching); line-height: 1.8; background: #171322f5; }
 .hand-status:not(.is-visible) { visibility: hidden; }
-.hand-camera { bottom: 120px; border-radius: 12px; }
+.hand-camera { right: max(24px, env(safe-area-inset-right)); bottom: calc(max(20px, env(safe-area-inset-bottom)) + 52px); border-radius: 12px; }
 
 /* The same engraved visual language carries through the collection and story. */
 .collection-progress { display: flex; align-items: center; gap: 20px; padding: 24px 0; font-size: 10px; color: #bcacd0; }
@@ -181,7 +171,6 @@ body:not(.is-opening-page) #newPackButton { display: none; }
     .stage-guide > .section-eyebrow { font-size: 6px; }
     .stage-story > .section-eyebrow { font-size: 6px; }
     .catalog-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
-    .command-bar { padding-inline: 28px; }
     .spread-card { width: 210px; }
     .spread-card.card-slot-0-5 { --tx: -28vw; }
     .spread-card.card-slot-1-5 { --tx: -14vw; }
@@ -190,7 +179,7 @@ body:not(.is-opening-page) #newPackButton { display: none; }
 }
 @media (max-width: 768px) {
     body::after { inset: 6px; }
-    .app-shell { width: 100%; padding: 0 20px 116px; }
+    .app-shell { width: 100%; padding: 0 20px 80px; }
     .hero-copy { display: grid; grid-template-columns: 1fr auto; gap: 0; min-height: 0; padding: 22px 0 0; }
     .brand-lockup { gap: 13px; padding-left: 6px; }
     .brand-seal { width: 29px; height: 29px; outline-offset: 4px; }
@@ -218,25 +207,24 @@ body:not(.is-opening-page) #newPackButton { display: none; }
     .edition-tag { font-size: 6px; gap: 5px; letter-spacing: .1em; }
     .edition-tag > span { font-size: 16px; }
     .stage-story, .stage-guide { display: none; }
-    .card-stage { height: clamp(310px, calc(100svh - 367px), 530px); min-height: 310px; }
+    .card-stage { height: clamp(300px, calc(100svh - 305px), 460px); min-height: 300px; }
     .booster-pack { width: min(55vw, 265px, calc((100svh - 385px) * .65)); min-width: 175px; translate: -50% -50%; }
     .celestial-orbit { width: min(94vw, 480px); }
-    .ritual-caption { gap: 12px; margin-top: 2px; }
+    .ritual-caption { gap: 10px; margin-top: 2px; }
     .ritual-caption .section-eyebrow { font-size: 7px; letter-spacing: .17em; }
-    .ritual-caption p { font-size: 10px; margin-top: 7px; max-width: 250px; }
-    .ritual-line { width: 22px; flex-shrink: 0; }
-    .command-bar { display: flex; justify-content: center; padding: 14px max(20px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)); min-height: 90px; gap: 0; }
-    .command-note, .command-edition { display: none; }
-    .command-actions { width: min(100%, 430px); gap: 10px; }
-    .action-button { min-width: 0; flex: 1.35; padding: 10px 14px; gap: 10px; font-size: 13px; }
-    .hand-control-button { min-width: 0; flex: 1; padding: 10px 12px; gap: 9px; font-size: 12px; }
-    .action-button small, .hand-control-button small { font-size: 8px; }
-    .button-arrow { margin-left: auto; font-size: 18px; }
-    .button-icon svg, .hand-control-button > svg { width: 21px; height: 21px; }
-    .hand-control-dot { margin-left: auto; width: 5px; height: 5px; }
-    body:not(.is-opening-page) .command-actions { width: 170px; }
-    .hand-camera { bottom: 108px; width: 144px; right: 16px; }
-    .hand-status { bottom: 228px; right: 16px; max-width: calc(100vw - 32px); font-size: 11px; }
+    .ritual-caption .action-button { min-width: 210px; min-height: 48px; padding: 7px 14px 7px 13px; gap: 11px; font-size: 13px; }
+    .action-button small { font-size: 8px; }
+    .button-arrow { font-size: 17px; padding-left: 12px; }
+    .button-icon svg { width: 20px; height: 20px; }
+    /* Phones get an icon-only Hand button so it never collides with New Pack. */
+    .command-bar { padding: 0 max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
+    .command-note { display: none; }
+    .hand-control-button { width: 44px; height: 44px; min-height: 44px; padding: 0; gap: 0; justify-content: center; }
+    .hand-control-button > span:not(.hand-control-dot) { display: none; }
+    .hand-control-button > svg { width: 19px; height: 19px; }
+    .hand-control-dot { position: absolute; top: 8px; right: 8px; margin: 0; }
+    .hand-camera { bottom: calc(max(16px, env(safe-area-inset-bottom)) + 56px); width: 144px; right: max(16px, env(safe-area-inset-right)); }
+    .hand-status { bottom: calc(max(16px, env(safe-area-inset-bottom)) + 174px); right: max(16px, env(safe-area-inset-right)); max-width: calc(100vw - 32px); font-size: 11px; }
     .spread-card { width: min(33vw, 140px); }
     .spread-card.card-slot-0-5 { --tx: -21vw; }
     .spread-card.card-slot-1-5 { --tx: -10.5vw; }
@@ -258,8 +246,7 @@ body:not(.is-opening-page) #newPackButton { display: none; }
     .glitch { font-size: 25px; }
     .brand-eyebrow { font-size: 5px; }
     .archive-counter > svg { display: none; }
-    .command-bar { padding-inline: 14px; }
-    .action-button, .hand-control-button { padding-inline: 10px; gap: 8px; }
+    .ritual-caption .action-button { min-width: 190px; padding-inline: 12px; gap: 10px; }
     .button-arrow { display: none; }
     .edition-tag { font-size: 5px; }
 }

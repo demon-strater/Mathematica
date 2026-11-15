@@ -1252,7 +1252,6 @@ function updateRitualUI(phase) {
     newPack.disabled = opening;
     newPack.setAttribute("aria-busy", String(opening));
     document.getElementById("ritualState").textContent = opening ? "THE SEAL IS BREAKING" : revealed ? "FIVE NEW WONDERS, NOW YOURS" : "AWAITING YOUR DISCOVERY";
-    document.getElementById("ritualHint").textContent = opening ? "봉인이 풀리고 있습니다…" : revealed ? "카드를 두 번 눌러 발견에 담긴 이야기를 만나보세요" : "팩 상단을 오른쪽으로 드래그하거나 눌러 봉인을 해제하세요";
 }
 
 function setRipInstructions(text) {
