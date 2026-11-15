@@ -1221,7 +1221,7 @@ body::after {
 .hand-camera[data-mode="pinch"],
 .hand-camera[data-mode="drag"] { --hand-accent: #70ffcc; }
 .hand-camera[data-mode="fist"] { --hand-accent: #ffbe70; }
-.hand-camera[data-mode="palm"] { --hand-accent: #c9b2ff; }
+.hand-camera[data-mode="swipe"] { --hand-accent: #c9b2ff; }
 
 .hand-fingers {
     position: absolute;
