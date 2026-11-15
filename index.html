@@ -12,7 +12,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="stylesheet" href="style.css?v=20261115-1">
-  <link rel="stylesheet" href="sanctum.css?v=20261115-3">
+  <link rel="stylesheet" href="sanctum.css?v=20261115-4">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -48,7 +48,6 @@
         </div>
 
         <div class="opening-stage">
-          <div class="stage-story"><span class="section-eyebrow">A WORLD WRITTEN IN NUMBERS</span><h3>Unseal<br>the <em>extraordinary.</em></h3><p>세상을 바꾼 위대한 발견,<br>봉인된 다섯 장의 카드에 깨어나다.</p><div class="story-rule" aria-hidden="true"><span>✦</span></div><span class="stage-volume">FORMULA RELICS <span>VOL. I</span></span></div>
           <div class="opening-header">
             <h3 id="openingTitle" class="neon-text"></h3>
             <p id="revealMessage" class="sub-text"></p>
@@ -79,8 +78,15 @@
           <div class="rip-instructions hidden" id="ripInstructions"></div>
         </div>
         <div class="ritual-caption">
-          <span id="ritualState" class="section-eyebrow" aria-live="polite">AWAITING YOUR DISCOVERY</span>
-          <button id="newPackButton" class="action-button" type="button" aria-label="New Pack · 새 카드팩 준비"><span class="button-icon" aria-hidden="true"><svg><use href="#icon-star"/></svg></span><span class="button-label">New Pack</span><span class="button-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span></button>
+          <button id="newPackButton" class="action-button" type="button" aria-label="New Pack · 새 카드팩 준비">
+            <span class="arcane-aura" aria-hidden="true"></span>
+            <span class="arcane-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="arcane-core">
+              <span class="arcane-rune" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 1 2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6Z"/></svg></span>
+              <span class="button-label">New Pack</span>
+              <span class="arcane-rune" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 1 2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6Z"/></svg></span>
+            </span>
+          </button>
         </div>
         </section>
       </section>
@@ -138,7 +144,6 @@
   </div>
 
   <footer class="command-bar">
-    <div class="command-note"><span aria-hidden="true">✧</span><span>WHERE KNOWLEDGE<br><strong>BECOMES WONDER</strong></span></div>
     <button id="handControlButton" class="hand-control-button" type="button" aria-pressed="false" aria-label="Hand · 손 인식 카메라 켜기" title="손으로 조작하기"><svg aria-hidden="true"><use href="#icon-hand"/></svg><span><span class="hand-control-label">Hand</span><small id="handControlState">손으로 조작하기</small></span><span class="hand-control-dot" aria-hidden="true"></span></button>
   </footer>
   <div id="handStatus" class="hand-status" role="status" aria-live="polite"></div>
@@ -229,7 +234,7 @@
     </article>
   </template>
 
-  <script src="script.js?v=20261115-1"></script>
+  <script src="script.js?v=20261115-2"></script>
   <script type="module" src="hand-tracking.js?v=20261115-1"></script>
 </body>
 </html>

@@ -68,7 +68,7 @@ p.section-eyebrow { margin: 0 0 5px; }
 .edition-tag > span { font-size: 20px; color: #b8a1df; }
 .opening-stage { padding: 0; isolation: isolate; }
 .opening-header { position: absolute; margin: 0; }
-.card-stage { height: clamp(340px, calc(100svh - 250px), 680px); min-height: 340px; }
+.card-stage { height: clamp(340px, calc(100svh - 232px), 700px); min-height: 340px; }
 .booster-pack { width: min(28vw, 300px, calc((100svh - 290px) * .65)); min-width: 230px; translate: -50% -50%; }
 .booster-pack:hover { filter: none; }
 .booster-pack::after { background: #070511bf; box-shadow: 0 0 65px #b396ef1c; }
@@ -79,15 +79,6 @@ p.section-eyebrow { margin: 0 0 5px; }
 .orbit-inner { opacity: .18; transform-origin: center; animation: orbitTurn 220s linear infinite reverse; }
 .orbit-stars { fill: #d1b8ff; stroke: #d1b8ff; opacity: .65; filter: drop-shadow(0 0 5px #bda2ff); }
 @keyframes orbitTurn { to { transform: rotate(360deg); } }
-.stage-story { position: absolute; left: 1%; top: 50%; transform: translateY(-50%); width: 27%; z-index: 1; pointer-events: none; transition: opacity .35s; }
-.stage-story > .section-eyebrow { font-size: 7px; letter-spacing: .17em; }
-.stage-story h3 { margin: 22px 0 18px; font: 500 clamp(32px, 3.3vw, 49px)/1.08 'Cormorant Garamond', serif; letter-spacing: -.03em; color: #ece3ff; }
-.stage-story em { color: #bfaae9; font-weight: 500; }
-.stage-story p { font-size: 11px; line-height: 2; color: #a49ab6; word-break: keep-all; }
-.story-rule { width: 112px; height: 25px; display: flex; align-items: center; gap: 10px; color: #bca0e5; font-size: 11px; margin: 22px 0 10px; }
-.story-rule::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, #bca0e55e, transparent); }
-.stage-volume { font-size: 7px; color: #9b8bad; letter-spacing: .18em; }
-.stage-volume span { display: inline-block; margin-left: 15px; color: #746580; }
 .stage-guide { position: absolute; right: 1%; top: 50%; transform: translateY(-50%); width: 165px; transition: opacity .35s; }
 .stage-guide > .section-eyebrow { font-size: 7px; letter-spacing: .13em; }
 .stage-guide ol { padding: 12px 0; margin: 0; list-style: none; }
@@ -100,51 +91,90 @@ p.section-eyebrow { margin: 0 0 5px; }
 .stage-guide .tier-silver { color: #a2a9c1; }
 .stage-guide .tier-bronze { color: #b38d81; }
 .stage-guide p { font: italic 13px 'Cormorant Garamond', serif; color: #8e819e; border-top: 1px solid #b9a3f41a; padding-top: 14px; }
-.pack-panel.has-revealed .stage-story, .pack-panel.has-revealed .stage-guide { opacity: 0; visibility: hidden; }
+.pack-panel.has-revealed .stage-guide { opacity: 0; visibility: hidden; }
 .pack-panel.has-revealed .celestial-orbit { opacity: .45; }
-/* The ritual status sits under the pack with the New Pack button right beneath it. */
-.ritual-caption { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; margin: 6px 0 0; }
-.ritual-caption .section-eyebrow { font-size: 8px; color: #c2addf; letter-spacing: .23em; }
+/* The New Pack button sits right under the pack. */
+.ritual-caption { display: flex; justify-content: center; margin: 8px 0 0; }
 
-/* New Pack: a dark glass pill with a slowly drifting foil hairline, an etched halo ring,
-   a gold star that turns and a sheen that sweeps across on hover. */
+/* New Pack — an arcane seal: a ring of light that keeps circling the rim, a breathing
+   aura in the same colours, twinkling sparks, gold-shimmer lettering and pulsing star runes. */
+@property --arcane-turn { syntax: '<angle>'; inherits: true; initial-value: 0deg; }
 .action-button {
-    --pack-btn-fill: radial-gradient(120% 150% at 50% 0%, #6a52ad 0%, #2c2256 46%, #141028 100%);
-    --pack-btn-foil: linear-gradient(110deg, #f1d9a4, #c9a9ff 30%, #8fb6ff 52%, #e7b8ff 74%, #f1d9a4);
-    position: relative; inset: auto; flex: none; isolation: isolate; overflow: hidden;
-    display: inline-flex; align-items: center; justify-content: center; gap: 12px;
-    min-width: 212px; height: 50px; padding: 0 22px 0 21px;
-    border: 1px solid transparent; border-radius: 999px;
-    background: var(--pack-btn-fill) padding-box, var(--pack-btn-foil) border-box;
-    background-size: 100% 100%, 220% 100%;
-    outline: 1px solid #c4a8ff2e; outline-offset: 4px;
-    color: #f7f0ff;
-    box-shadow: inset 0 1px #ffffff2e, inset 0 -10px 18px #0b081a8c, 0 12px 30px #0007, 0 0 36px #8d6bdc38;
-    font: 700 13px/1 'Cinzel', serif; letter-spacing: .2em; text-transform: uppercase; text-shadow: 0 0 14px #cdb2ff73;
+    --arcane-spectrum: conic-gradient(from var(--arcane-turn), #f7dc9c, #b98bff 18%, #6fd6ff 34%, #f2b5ff 50%, #9f7bff 66%, #ffe2a6 82%, #f7dc9c);
+    position: relative; inset: auto; flex: none; isolation: isolate; overflow: visible;
+    display: inline-grid; place-items: center;
+    min-width: 224px; height: 54px; padding: 0;
+    border: 0; border-radius: 999px; outline-offset: 6px;
+    background: none; box-shadow: none; color: #fff; text-shadow: none;
+    font: 600 13px/1 'Cinzel', serif; letter-spacing: .26em; text-transform: uppercase;
     cursor: pointer;
-    animation: foilRim 7s linear infinite;
-    transition: transform .22s cubic-bezier(.34, 1.56, .64, 1), box-shadow .25s, outline-color .25s, outline-offset .25s;
+    animation: arcaneTurn 5s linear infinite;
+    transition: transform .35s cubic-bezier(.34, 1.56, .64, 1), filter .3s;
 }
-.action-button::before { content: none; }
-.action-button::after { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: linear-gradient(105deg, transparent 35%, #ffffff3b 50%, transparent 65%); transform: translateX(-130%); animation: none; transition: transform .75s ease; pointer-events: none; }
-.button-label { padding-top: 2px; }
-.button-icon { display: grid; place-items: center; color: #f1d9a4; filter: drop-shadow(0 0 6px #f1d9a499); transition: rotate .5s cubic-bezier(.34, 1.56, .64, 1); }
-.button-icon svg { width: 17px; height: 17px; }
-.button-arrow { display: grid; place-items: center; color: #e2d2ff; transition: transform .25s; }
-.button-arrow svg { width: 15px; height: 15px; stroke-width: 1.7; }
-.action-button:hover:not(:disabled) { transform: translateY(-2px); outline-color: #d6bfff5c; outline-offset: 5px; box-shadow: inset 0 1px #ffffff38, inset 0 -10px 18px #0b081a8c, 0 16px 34px #0008, 0 0 54px #9d7bf066; }
-.action-button:hover:not(:disabled)::after { transform: translateX(130%); }
-.action-button:hover:not(:disabled) .button-icon { rotate: 45deg; }
-.action-button:hover:not(:disabled) .button-arrow { transform: translateX(3px); }
-.action-button:active:not(:disabled) { transform: translateY(0) scale(.97); }
-.action-button:disabled { opacity: .45; cursor: wait; color: #f7f0ff; border-color: transparent; background: var(--pack-btn-fill) padding-box, var(--pack-btn-foil) border-box; background-size: 100% 100%, 220% 100%; animation-play-state: paused; }
+/* The circling rim: the spectrum masked down to a hairline ring. */
+.action-button::before {
+    content: ''; position: absolute; inset: 0; z-index: 2; padding: 1.5px; border-radius: inherit;
+    background: var(--arcane-spectrum);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    font-size: 0; text-shadow: none; pointer-events: none;
+}
+.action-button::after { content: none; }
+.arcane-aura { position: absolute; inset: -5px; z-index: -1; border-radius: inherit; background: var(--arcane-spectrum); filter: blur(16px); opacity: .5; animation: arcaneBreath 3.4s ease-in-out infinite; transition: opacity .3s, filter .3s; pointer-events: none; }
+.arcane-core {
+    position: relative; z-index: 1; overflow: hidden;
+    display: flex; align-items: center; justify-content: center; gap: 15px;
+    width: 100%; height: 100%; padding: 0 28px; border-radius: inherit;
+    background:
+        radial-gradient(80% 120% at 50% 130%, #8a5cf0a6, transparent 62%),
+        radial-gradient(60% 90% at 50% -25%, #e9d3ff33, transparent 70%),
+        repeating-conic-gradient(from 0deg at 50% 50%, #ffffff05 0 6deg, transparent 6deg 12deg),
+        linear-gradient(180deg, #1d1440, #0c0920);
+    box-shadow: inset 0 0 22px #8d63ff4d, inset 0 1px #ffffff2b;
+}
+/* A slow sheen that drifts across the seal every few seconds. */
+.arcane-core::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 38%, #fff2d633 50%, transparent 62%); transform: translateX(-140%); animation: arcaneSheen 5.5s ease-in-out infinite; pointer-events: none; }
+.button-label {
+    padding-top: 2px;
+    background: linear-gradient(90deg, #e9cf92, #fff8e4 25%, #dcc6ff 50%, #fff8e4 75%, #e9cf92);
+    background-size: 200% 100%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 0 7px #c9a6ffa6);
+    animation: arcaneShimmer 6s linear infinite;
+}
+.arcane-rune { display: grid; place-items: center; color: #f6dc9f; filter: drop-shadow(0 0 5px #f6dc9f); animation: arcaneRune 2.6s ease-in-out infinite; }
+.arcane-rune:last-child { animation-delay: -1.3s; }
+.arcane-rune svg { width: 11px; height: 11px; fill: currentColor; stroke: none; }
+/* Sparks: tiny four-point twinkles orbiting just outside the rim. */
+.arcane-sparks { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.arcane-sparks i {
+    position: absolute; width: 11px; height: 11px; opacity: 0;
+    background:
+        radial-gradient(circle, #fffaf0 0 1px, #ffe4a866 2px, transparent 4px),
+        linear-gradient(90deg, transparent, #ffe9b8, transparent) center / 100% 1px no-repeat,
+        linear-gradient(transparent, #ffe9b8, transparent) center / 1px 100% no-repeat;
+    animation: arcaneSpark 3.2s ease-in-out infinite;
+}
+.arcane-sparks i:nth-child(1) { left: 9%; top: -9px; animation-delay: 0s; }
+.arcane-sparks i:nth-child(2) { left: 33%; bottom: -10px; animation-delay: -.6s; scale: .75; }
+.arcane-sparks i:nth-child(3) { left: 58%; top: -11px; animation-delay: -1.3s; scale: .9; }
+.arcane-sparks i:nth-child(4) { right: 9%; bottom: -9px; animation-delay: -1.9s; }
+.arcane-sparks i:nth-child(5) { right: -11px; top: 30%; animation-delay: -2.4s; scale: .8; }
+.arcane-sparks i:nth-child(6) { left: -11px; top: 46%; animation-delay: -2.9s; scale: .7; }
+.action-button:hover:not(:disabled) { transform: translateY(-2px) scale(1.03); }
+.action-button:hover:not(:disabled) .arcane-aura { opacity: .9; filter: blur(20px); }
+.action-button:hover:not(:disabled) .arcane-sparks i { animation-duration: 1.6s; }
+.action-button:active:not(:disabled) { transform: scale(.96); }
+.action-button:disabled { opacity: .45; cursor: wait; color: #fff; background: none; border: 0; }
+@keyframes arcaneTurn { to { --arcane-turn: 360deg; } }
+@keyframes arcaneBreath { 0%, 100% { scale: .97; } 50% { scale: 1.04; } }
+@keyframes arcaneSheen { 0%, 55% { transform: translateX(-140%); } 100% { transform: translateX(140%); } }
+@keyframes arcaneShimmer { to { background-position: -200% 0; } }
+@keyframes arcaneRune { 0%, 100% { opacity: .55; transform: scale(.75) rotate(0deg); } 50% { opacity: 1; transform: scale(1.15) rotate(45deg); } }
+@keyframes arcaneSpark { 0%, 100% { opacity: 0; transform: scale(.2) rotate(0deg); } 40% { opacity: 1; transform: scale(1) rotate(45deg); } 70% { opacity: 0; transform: scale(.3) rotate(90deg); } }
 
 /* No dock: the footer is a click-through overlay holding a small Hand button at the bottom right. */
 .command-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10019; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 max(24px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(28px, env(safe-area-inset-left)); pointer-events: none; }
-.command-note { display: flex; align-items: center; gap: 14px; color: #847993; font-size: 7px; letter-spacing: .18em; line-height: 1.9; }
-.command-note > span:first-child { font-size: 22px; color: #ae99c7; }
-.command-note strong { font-weight: 400; color: #baaccb; }
-body:not(.is-opening-page) .command-note { visibility: hidden; }
 .hand-control-button { position: relative; inset: auto; margin-left: auto; pointer-events: auto; display: flex; align-items: center; gap: 7px; min-width: 0; min-height: 40px; padding: 0 14px 0 12px; border-radius: 999px; border: 1px solid #a994c640; background: #1a1727d9; color: #dbd0ed; box-shadow: 0 6px 20px #0004; backdrop-filter: blur(14px); font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: none; cursor: pointer; animation: none; transition: transform .16s, background .2s, border-color .2s, box-shadow .2s; }
 .hand-control-button > svg { width: 17px; height: 17px; color: #c0acd9; }
 .hand-control-button small { display: none; }
@@ -188,11 +218,9 @@ body:not(.is-opening-page) .command-note { visibility: hidden; }
     .brand-seal { width: 33px; height: 33px; }
     .brand-lockup { gap: 12px; }
     .glitch { font-size: 26px; }
-    .stage-story { left: 0; width: 25%; }
     .stage-guide { right: 0; width: 140px; }
     .stage-guide li { font-size: 10px; }
     .stage-guide > .section-eyebrow { font-size: 6px; }
-    .stage-story > .section-eyebrow { font-size: 6px; }
     .catalog-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
     .spread-card { width: 210px; }
     .spread-card.card-slot-0-5 { --tx: -28vw; }
@@ -230,16 +258,14 @@ body:not(.is-opening-page) .command-note { visibility: hidden; }
     .panel-title { font-size: 14px; letter-spacing: .015em; }
     .edition-tag { font-size: 6px; gap: 5px; letter-spacing: .1em; }
     .edition-tag > span { font-size: 16px; }
-    .stage-story, .stage-guide { display: none; }
-    .card-stage { height: clamp(300px, calc(100svh - 258px), 480px); min-height: 300px; }
+    .stage-guide { display: none; }
+    .card-stage { height: clamp(300px, calc(100svh - 242px), 480px); min-height: 300px; }
     .booster-pack { width: min(55vw, 265px, calc((100svh - 345px) * .65)); min-width: 175px; translate: -50% -50%; }
     .celestial-orbit { width: min(94vw, 480px); }
-    .ritual-caption { gap: 10px; margin-top: 2px; }
-    .ritual-caption .section-eyebrow { font-size: 7px; letter-spacing: .17em; }
-    .ritual-caption .action-button { min-width: 196px; height: 46px; padding: 0 19px 0 18px; gap: 10px; font-size: 12px; }
+    .ritual-caption { margin-top: 6px; }
+    .ritual-caption .action-button { min-width: 204px; height: 50px; padding: 0; font-size: 12px; }
     /* Phones get an icon-only Hand button so it never collides with New Pack. */
     .command-bar { padding: 0 max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
-    .command-note { display: none; }
     .hand-control-button { width: 44px; height: 44px; min-height: 44px; padding: 0; gap: 0; justify-content: center; }
     .hand-control-button > span:not(.hand-control-dot) { display: none; }
     .hand-control-button > svg { width: 19px; height: 19px; }
@@ -267,13 +293,14 @@ body:not(.is-opening-page) .command-note { visibility: hidden; }
     .glitch { font-size: 25px; }
     .brand-eyebrow { font-size: 5px; }
     .archive-counter > svg { display: none; }
-    .ritual-caption .action-button { min-width: 180px; padding-inline: 16px; gap: 9px; }
+    .ritual-caption .action-button { min-width: 188px; }
+    .arcane-core { padding: 0 20px; gap: 12px; }
     .edition-tag { font-size: 5px; }
 }
 @media (max-height: 700px) and (min-width: 769px) {
     .hero-copy { min-height: 78px; }
     .page-stack { margin-top: 6px; }
-    .card-stage { height: clamp(320px, calc(100svh - 244px), 460px); min-height: 320px; }
+    .card-stage { height: clamp(320px, calc(100svh - 226px), 460px); min-height: 320px; }
     .booster-pack { min-width: 210px; }
     .celestial-orbit { width: 420px; }
 }
@@ -304,7 +331,7 @@ body:not(.is-opening-page) .command-note { visibility: hidden; }
 @media (min-width: 769px) {
     .spread-fan { container-type: size; }
     .spread-fan .spread-card {
-        --fan-card-width: clamp(130px, min(19cqw, (100cqh - 40px) / 2.15), 260px);
+        --fan-card-width: clamp(130px, min(19cqw, (100cqh - 40px) / 2.25), 260px);
         --fan-card-height: calc(var(--fan-card-width) * 1.5);
         --fan-reach: max(0px, min(calc(50cqw - var(--fan-card-width) * .72 - 12px), calc(var(--fan-card-width) * 1.5)));
         --ty: calc((var(--fan-position, 0) * var(--fan-position, 0) * .14 - .09) * var(--fan-card-height));

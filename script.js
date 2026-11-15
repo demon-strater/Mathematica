@@ -1251,7 +1251,6 @@ function updateRitualUI(phase) {
     const newPack = document.getElementById("newPackButton");
     newPack.disabled = opening;
     newPack.setAttribute("aria-busy", String(opening));
-    document.getElementById("ritualState").textContent = opening ? "THE SEAL IS BREAKING" : revealed ? "FIVE NEW WONDERS, NOW YOURS" : "AWAITING YOUR DISCOVERY";
 }
 
 function setRipInstructions(text) {
