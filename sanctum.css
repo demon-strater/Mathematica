@@ -96,7 +96,7 @@ p.section-eyebrow { margin: 0 0 5px; }
 .pack-panel.has-revealed .stage-guide { opacity: 0; visibility: hidden; }
 .pack-panel.has-revealed .celestial-orbit { opacity: .45; }
 /* Observatory controls echo the brand's diamonds, star and fine lavender orbit lines. */
-.ritual-caption { display: flex; justify-content: center; margin: 8px 0 0; }
+.ritual-caption { display: flex; justify-content: center; margin: 30px 0 0; }
 .archive-action {
     --frame-ink: #282235;
     --frame-edge: #b5a0d5;
