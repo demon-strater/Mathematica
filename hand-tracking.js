@@ -37,6 +37,8 @@ let lastSwipeAt = 0;
 let swipeGrouped = false;
 let swipeSpent = false;
 let pinchBlocked = false;
+let palmScrollY = null;
+let palmSince = 0;
 const pointerId = 9876;
 const PAGE_ORDER = ["opening", "catalog", "about"];
 const DRAG_START_PX = 24;
@@ -46,6 +48,9 @@ const FIST_HOLD_MS = 480;
 // Thumb, index and middle tips gathered within this many palm widths start a page swipe.
 const SWIPE_GROUP_START = 0.6;
 const SWIPE_GROUP_RELEASE = 0.8;
+// Open-palm scroll: page pixels per viewport-height of palm travel, and settle time.
+const PALM_SCROLL_GAIN = 2.5;
+const PALM_SETTLE_MS = 180;
 
 // MediaPipe hand skeleton, grouped by finger (thumb → pinky) plus the palm.
 const FINGER_CHAINS = [[0, 1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16], [17, 18, 19, 20]];
@@ -58,6 +63,7 @@ const GESTURE_LABELS = {
     drag: "드래그 중",
     fist: "주먹 · 유지하면 뒤로",
     swipe: "세 손가락 · 좌우로 넘기기",
+    scroll: "손바닥 · 위아래로 스크롤",
 };
 const MODE_COLORS = {
     point: "#97ffdc",
@@ -65,6 +71,7 @@ const MODE_COLORS = {
     drag: "#70ffcc",
     fist: "#ffbe70",
     swipe: "#c9b2ff",
+    scroll: "#8fd0ff",
 };
 let shownMode = "";
 let shownText = "";
@@ -212,7 +219,21 @@ function drawHand(hand, mode, pinchRatio) {
     const [indexX, indexY] = points[8];
     const isPinchMode = mode === "pinch" || mode === "drag";
     const approach = Math.min(1, Math.max(0, (1.1 - pinchRatio) / (1.1 - PINCH_START_DISTANCE)));
-    if (mode === "swipe") {
+    if (mode === "scroll") {
+        // Open palm: up/down chevrons at the palm centre.
+        const palmX = [0, 5, 9, 13, 17].reduce((sum, i) => sum + points[i][0], 0) / 5;
+        const palmY = [0, 5, 9, 13, 17].reduce((sum, i) => sum + points[i][1], 0) / 5;
+        ctx.beginPath();
+        for (const side of [-1, 1]) {
+            const tipY = palmY + side * 14 * unit;
+            ctx.moveTo(palmX - 6 * unit, tipY - side * 5 * unit);
+            ctx.lineTo(palmX, tipY);
+            ctx.lineTo(palmX + 6 * unit, tipY - side * 5 * unit);
+        }
+        ctx.strokeStyle = accent;
+        ctx.lineWidth = 2 * unit;
+        ctx.stroke();
+    } else if (mode === "swipe") {
         // Gathered thumb, index and middle: outline the trio with left/right chevrons.
         const [middleX, middleY] = points[12];
         const centerX = (thumbX + indexX + middleX) / 3;
@@ -360,6 +381,8 @@ function releaseGesture() {
     swipeGrouped = false;
     swipeSpent = false;
     pinchBlocked = false;
+    palmScrollY = null;
+    palmSince = 0;
     cursor.classList.remove("is-visible", "is-pinching", "is-fist");
 }
 
@@ -546,6 +569,44 @@ function updateSwipeGroup(hand, palmWidth) {
     return true;
 }
 
+// A deliberately spread hand: all four fingers raised and the thumb out to the side.
+function isSpreadPalm(hand) {
+    const wrist = hand[0];
+    const raised = [[8, 6], [12, 10], [16, 14], [20, 18]].every(([tip, joint]) =>
+        distance(hand[tip], wrist) > distance(hand[joint], wrist) * 1.04 && hand[tip].y < hand[joint].y + 0.035);
+    const thumbOut = distance(hand[4], hand[17]) > distance(hand[2], hand[17]) * 1.1;
+    return raised && thumbOut && distance(hand[5], hand[17]) > 0.075;
+}
+
+function scrollPageBy(top) {
+    const modal = document.getElementById("cardModal");
+    const dialog = modal && !modal.classList.contains("hidden") ? modal.querySelector(".card-modal-dialog") : null;
+    (dialog || window).scrollBy({ top, behavior: "auto" });
+}
+
+// Open palm moved up/down scrolls like dragging the page: hand up shows content further down.
+function updatePalmScroll(hand, isPalm) {
+    if (!isPalm) {
+        palmScrollY = null;
+        palmSince = 0;
+        return false;
+    }
+    const now = performance.now();
+    const palmY = [0, 5, 9, 13, 17].reduce((sum, i) => sum + hand[i].y, 0) / 5;
+    if (palmScrollY === null) {
+        palmScrollY = palmY;
+        palmSince = now;
+        return true;
+    }
+    // Smooth landmark jitter; opening the hand gets a short settle so the page doesn't jolt.
+    const smoothed = palmScrollY + (palmY - palmScrollY) * 0.5;
+    const deltaY = smoothed - palmScrollY;
+    palmScrollY = smoothed;
+    if (now - palmSince < PALM_SETTLE_MS || Math.abs(deltaY) < 0.002) return true;
+    scrollPageBy(-deltaY * window.innerHeight * PALM_SCROLL_GAIN);
+    return true;
+}
+
 function trackFrame() {
     if (!enabled) return;
     if (video.readyState >= 2 && video.currentTime !== lastVideoTime) {
@@ -576,6 +637,9 @@ function trackFrame() {
                 fistTriggered = false;
                 cursor.classList.remove("is-fist");
             }
+            // Open-palm scroll yields to every other gesture, including a pinch on its way in.
+            const isScrolling = updatePalmScroll(hand,
+                !isIndexGesturePose && !isFist && !indexGesture.isActive && isSpreadPalm(hand));
             cursor.classList.add("is-visible");
             updateCursor(x, y, pinching);
 
@@ -594,6 +658,8 @@ function trackFrame() {
                 mode = "drag";
             } else if (indexGesture.isActive) {
                 mode = "pinch";
+            } else if (isScrolling) {
+                mode = "scroll";
             }
             // Chips light the fingers that are raised, plus the ones doing the gesture.
             const fingers = readFingerStates(hand);
@@ -649,7 +715,7 @@ async function startHandControl() {
         button.setAttribute("aria-pressed", "true");
         button.setAttribute("aria-label", "카메라 끄기");
         // Brief how-to that fades after 3 seconds; the camera preview keeps showing gestures live.
-        setStatus("검지+엄지를 짧게 모으면 클릭 · 모은 채 움직이면 드래그 · 엄지+검지+중지를 모아 좌우로 움직이면 페이지 전환 · 주먹을 쥐면 뒤로 가기", false, 3000);
+        setStatus("검지+엄지를 짧게 모으면 클릭 · 모은 채 움직이면 드래그 · 엄지+검지+중지를 모아 좌우로 움직이면 페이지 전환 · 손바닥을 펴고 위아래로 움직이면 스크롤 · 주먹을 쥐면 뒤로 가기", false, 3000);
         animationFrame = requestAnimationFrame(trackFrame);
     } catch (error) {
         console.error("Hand tracking could not start", error);
