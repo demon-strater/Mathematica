@@ -12,11 +12,22 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="stylesheet" href="style.css?v=20261115-1">
-  <link rel="stylesheet" href="sanctum.css?v=20261115-5">
+  <link rel="stylesheet" href="sanctum.css?v=20261115-9">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="ornament-button" viewBox="0 0 200 64">
+      <path class="ornament-surface" d="M30 12H88L100 5l12 7h58l14 14 6 6-6 6-14 14h-58l-12 7-12-7H30L16 38l-6-6 6-6Z"/>
+      <g class="ornament-detail">
+        <path d="M34 17h51m30 0h51M34 47h51m30 0h51M88 12l12 7 12-7M88 52l12-7 12 7"/>
+        <path d="m100 8 4 4-4 4-4-4Zm0 40 4 4-4 4-4-4Z"/>
+        <path d="M30 12H20l6 8-12 12 12 12-6 8h10M170 12h10l-6 8 12 12-12 12 6 8h-10"/>
+        <path d="M23 24C6 13 5 30 16 32 5 34 6 51 23 40M177 24c17-11 18 6 7 8 11 2 10 19-7 8"/>
+        <path d="m16 24 8 8-8 8-8-8Zm168 0 8 8-8 8-8-8Z"/>
+      </g>
+      <path class="ornament-tip" d="m1 32 5-3 5 3-5 3Zm188 0 5-3 5 3-5 3Z"/>
+    </symbol>
     <symbol id="icon-star" viewBox="0 0 24 24"><path d="m12 2 2.7 7.3L22 12l-7.3 2.7L12 22l-2.7-7.3L2 12l7.3-2.7Z"/><path d="m5 5 14 14M19 5 5 19"/></symbol>
     <symbol id="icon-cards" viewBox="0 0 24 24"><rect x="8" y="4" width="12" height="17" rx="2"/><path d="M5 18H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10M14 8v9m-3-4.5h6"/></symbol>
     <symbol id="icon-hand" viewBox="0 0 24 24"><path d="M8 13V6a1.5 1.5 0 0 1 3 0v6-8a1.5 1.5 0 0 1 3 0v8-6a1.5 1.5 0 0 1 3 0v7-3a1.5 1.5 0 0 1 3 0v6c0 4-2.5 6-6 6h-1c-2 0-3.5-1-5-3l-4-5a1.7 1.7 0 0 1 2.5-2.2L8 13Z"/></symbol>
@@ -41,12 +52,11 @@
 
     <main class="page-stack" id="pageStack" data-page="opening">
       <section class="page-view is-active" data-page="opening" aria-label="Pack Opening page">
-        <section class="panel pack-panel">
-        <div class="panel-header">
+        <div class="panel-header page-heading">
           <div class="chapter-heading"><span class="chapter-number">01</span><div><p class="section-eyebrow">THE SUMMONING CHAMBER</p><h2 class="panel-title">Pack Opening</h2></div></div>
           <span class="edition-tag"><span aria-hidden="true">✧</span> MUSEUM EDITION</span>
         </div>
-
+        <section class="panel pack-panel">
         <div class="opening-stage">
           <div class="opening-header">
             <h3 id="openingTitle" class="neon-text"></h3>
@@ -76,27 +86,22 @@
           </div>
           <aside class="stage-guide"><span class="section-eyebrow">FIVE TIERS OF DISCOVERY</span><ol><li class="tier-legendary"><span>V</span>Legendary<i></i></li><li class="tier-platinum"><span>IV</span>Platinum<i></i></li><li class="tier-gold"><span>III</span>Gold<i></i></li><li class="tier-silver"><span>II</span>Silver<i></i></li><li class="tier-bronze"><span>I</span>Bronze<i></i></li></ol><p>Every formula holds a story.</p></aside>
           <div class="rip-instructions hidden" id="ripInstructions"></div>
-          <button id="newPackButton" class="arcane-seal seal-new" type="button" aria-label="New Pack · 새 카드팩 준비">
-            <span class="arcane-aura" aria-hidden="true"></span>
-            <svg class="seal-runes" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="sealRunesNew" d="M50 9a41 41 0 1 1 0 82a41 41 0 1 1 0-82"/></defs><circle cx="50" cy="50" r="36.5"/><text><textPath href="#sealRunesNew" textLength="257" lengthAdjust="spacing">∑ ∫ ∂ π ∞ √ ∇ Δ φ θ λ Ω ∮ ℵ ✦</textPath></text></svg>
-            <span class="arcane-core"><span class="arcane-rune" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 1 2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6Z"/></svg></span><span class="button-label">New<br>Pack</span></span>
-            <span class="arcane-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          <button id="newPackButton" class="archive-action archive-action-new" type="button" aria-label="New Pack · 새 카드팩 준비">
+            <svg class="archive-action-frame" viewBox="0 0 200 64" preserveAspectRatio="none" aria-hidden="true"><use href="#ornament-button"/></svg>
+            <span class="archive-action-label">New Pack</span>
           </button>
         </div>
         <div class="ritual-caption">
-          <button id="openPackButton" class="arcane-seal seal-open" type="button" aria-label="Open · 카드팩 열기">
-            <span class="arcane-aura" aria-hidden="true"></span>
-            <svg class="seal-runes" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="sealRunesOpen" d="M50 9a41 41 0 1 1 0 82a41 41 0 1 1 0-82"/></defs><circle cx="50" cy="50" r="36.5"/><text><textPath href="#sealRunesOpen" textLength="257" lengthAdjust="spacing">✦ ∮ ℵ Ω λ θ φ Δ ∇ √ ∞ π ∂ ∫ ∑</textPath></text></svg>
-            <span class="arcane-core"><span class="arcane-rune" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 1 2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6Z"/></svg></span><span class="button-label">Open</span></span>
-            <span class="arcane-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          <button id="openPackButton" class="archive-action archive-action-open" type="button" aria-label="Open · 카드팩 열기">
+            <svg class="archive-action-frame" viewBox="0 0 200 64" preserveAspectRatio="none" aria-hidden="true"><use href="#ornament-button"/></svg>
+            <span class="archive-action-label">Open</span>
           </button>
         </div>
         </section>
       </section>
 
       <section class="page-view" data-page="catalog" aria-label="Master Catalog page" hidden>
-        <section class="panel catalog-panel">
-        <div class="panel-header">
+        <div class="panel-header page-heading catalog-heading">
           <div class="chapter-heading"><span class="chapter-number">02</span><div><p class="section-eyebrow">YOUR CABINET OF WONDERS</p><h2 class="panel-title">Collected Cards</h2></div></div>
           <div class="legend-row">
             <span class="rarity-chip bronze">Bronze</span>
@@ -106,6 +111,7 @@
             <span class="rarity-chip legendary">Legendary</span>
           </div>
         </div>
+        <section class="panel catalog-panel">
         <div class="collection-progress"><span id="collectionSummary">발견한 공식 0 / 33</span><div class="collection-track" role="progressbar" aria-label="공식 수집 진행률" aria-valuemin="0" aria-valuemax="33" aria-valuenow="0"><span id="collectionProgress"></span></div><span>THE MATHEMATICA ARCHIVE</span></div>
         <div id="catalogGrid" class="catalog-grid"></div>
         <p id="catalogEmptyState" class="empty-state hidden">아직 뽑은 카드가 없습니다. Pack Opening에서 먼저 카드를 열어보세요.</p>
@@ -113,10 +119,10 @@
       </section>
 
       <section class="page-view" data-page="about" aria-label="About Mathematica" hidden>
-        <section class="panel about-panel">
-          <div class="panel-header">
+          <div class="panel-header page-heading">
             <div class="chapter-heading"><span class="chapter-number">03</span><div><p class="section-eyebrow">BEYOND THE FORMULAS</p><h2 class="panel-title">The Story of Mathematica</h2></div></div>
           </div>
+        <section class="panel about-panel">
           <div class="about-layout">
             <div class="about-story">
               <p class="about-eyebrow">AN INTERACTIVE MATHEMATICAL ARCHIVE</p>
@@ -237,7 +243,7 @@
     </article>
   </template>
 
-  <script src="script.js?v=20261115-3"></script>
+  <script src="script.js?v=20261115-4"></script>
   <script type="module" src="hand-tracking.js?v=20261115-1"></script>
 </body>
 </html>

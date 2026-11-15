@@ -15,6 +15,12 @@ class ReusableHTTPServer(ThreadingHTTPServer):
 
 
 class QuietRequestHandler(SimpleHTTPRequestHandler):
+    def end_headers(self) -> None:
+        # Revalidate UI source on every refresh while keeping artwork cacheable.
+        if Path(self.path.split("?", 1)[0]).suffix in ("", ".html", ".css", ".js", ".webmanifest"):
+            self.send_header("Cache-Control", "no-store")
+        super().end_headers()
+
     def log_message(self, format: str, *args) -> None:
         logging.info("%s - %s", self.address_string(), format % args)
 
