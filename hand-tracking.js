@@ -5,6 +5,12 @@ const HAND_MODEL = "https://storage.googleapis.com/mediapipe-models/hand_landmar
 const button = document.getElementById("handControlButton");
 const status = document.getElementById("handStatus");
 const video = document.getElementById("handCamera");
+const cameraPanel = document.getElementById("handCameraPanel");
+const overlay = document.getElementById("handOverlay");
+const overlayContext = overlay?.getContext("2d");
+const gestureChip = document.getElementById("handGesture");
+const gestureText = document.getElementById("handGestureText");
+const fingerChips = [...document.querySelectorAll(".hand-fingers [data-finger]")];
 const cursor = document.getElementById("handCursor");
 
 let landmarker = null;
@@ -32,6 +38,31 @@ const PAGE_ORDER = ["opening", "catalog", "about"];
 const DRAG_START_PX = 24;
 const PINCH_START_DISTANCE = 0.48;
 const PINCH_RELEASE_DISTANCE = 0.56;
+const FIST_HOLD_MS = 480;
+
+// MediaPipe hand skeleton, grouped by finger (thumb → pinky) plus the palm.
+const FINGER_CHAINS = [[0, 1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16], [17, 18, 19, 20]];
+const PALM_CHAIN = [0, 5, 9, 13, 17, 0];
+const FINGER_TIPS = [4, 8, 12, 16, 20];
+const GESTURE_LABELS = {
+    searching: "손을 보여 주세요",
+    point: "가리키는 중",
+    pinch: "집는 중 · 놓으면 클릭",
+    drag: "드래그 중",
+    fist: "주먹 · 유지하면 뒤로",
+    palm: "손바닥 · 좌우로 넘기기",
+};
+const MODE_COLORS = {
+    point: "#97ffdc",
+    pinch: "#70ffcc",
+    drag: "#70ffcc",
+    fist: "#ffbe70",
+    palm: "#c9b2ff",
+};
+let shownMode = "";
+let shownText = "";
+let flashUntil = 0;
+let fingerStates = [false, false, false, false, false];
 
 function setStatus(message, isError = false) {
     status.textContent = message;
@@ -52,6 +83,166 @@ function dispatchPointer(target, type, x, y) {
         button: type === "pointermove" ? -1 : 0,
         buttons: type === "pointerup" ? 0 : 1,
     }));
+}
+
+function distance(a, b) {
+    return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+// Same curl rule the fist detector uses, so the chips show what the gestures see.
+function readFingerStates(hand) {
+    const wrist = hand[0];
+    const thumbOut = distance(hand[4], hand[17]) > distance(hand[2], hand[17]) * 1.1;
+    const others = [[8, 6], [12, 10], [16, 14], [20, 18]].map(([tip, joint]) =>
+        distance(hand[tip], wrist) >= distance(hand[joint], wrist) * 1.06);
+    return [thumbOut, ...others];
+}
+
+function renderFingerChips(states) {
+    states.forEach((isOn, index) => {
+        if (fingerStates[index] === isOn) return;
+        fingerStates[index] = isOn;
+        fingerChips[index]?.classList.toggle("is-on", isOn);
+    });
+}
+
+function setGesture(mode, hold = 0, label = GESTURE_LABELS[mode]) {
+    if (!gestureChip) return;
+    gestureChip.style.setProperty("--hold", Math.min(1, Math.max(0, hold)).toFixed(3));
+    if (performance.now() < flashUntil) return;
+    gestureChip.classList.remove("is-flash");
+    if (mode !== shownMode) {
+        shownMode = mode;
+        if (cameraPanel) cameraPanel.dataset.mode = mode;
+    }
+    if (label !== shownText) {
+        shownText = label;
+        gestureText.textContent = label;
+    }
+}
+
+function flashGesture(label) {
+    if (!gestureChip) return;
+    flashUntil = performance.now() + 650;
+    shownText = label;
+    gestureText.textContent = label;
+    gestureChip.classList.remove("is-flash");
+    void gestureChip.offsetWidth;
+    gestureChip.classList.add("is-flash");
+}
+
+function sizeOverlay() {
+    const width = overlay.clientWidth;
+    const height = overlay.clientHeight;
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    const pixelWidth = Math.round(width * ratio);
+    const pixelHeight = Math.round(height * ratio);
+    if (overlay.width !== pixelWidth || overlay.height !== pixelHeight) {
+        overlay.width = pixelWidth;
+        overlay.height = pixelHeight;
+    }
+    overlayContext.setTransform(ratio, 0, 0, ratio, 0, 0);
+    return { width, height, ratio };
+}
+
+function clearOverlay() {
+    if (!overlayContext) return;
+    overlayContext.setTransform(1, 0, 0, 1, 0, 0);
+    overlayContext.clearRect(0, 0, overlay.width, overlay.height);
+}
+
+function drawHand(hand, mode, pinchRatio) {
+    if (!overlayContext) return;
+    const ctx = overlayContext;
+    const { width, height, ratio } = sizeOverlay();
+    ctx.clearRect(0, 0, width, height);
+    // Map landmarks through the same object-fit: cover crop the video uses.
+    const videoWidth = video.videoWidth || 640;
+    const videoHeight = video.videoHeight || 480;
+    const scale = Math.max(width / videoWidth, height / videoHeight);
+    const offsetX = (width - videoWidth * scale) / 2;
+    const offsetY = (height - videoHeight * scale) / 2;
+    const points = hand.map((point) => [point.x * videoWidth * scale + offsetX, point.y * videoHeight * scale + offsetY]);
+    const accent = MODE_COLORS[mode] || "#d6c8ff";
+    const idle = "rgba(214, 200, 255, 0.5)";
+    const unit = Math.max(0.75, width / 180);
+
+    const strokeChain = (chain, color, lineWidth) => {
+        ctx.beginPath();
+        chain.forEach((pointIndex, step) => {
+            const [x, y] = points[pointIndex];
+            if (step === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        });
+        ctx.strokeStyle = color;
+        ctx.lineWidth = lineWidth;
+        ctx.stroke();
+    };
+    const dot = (x, y, radius, color) => {
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+    };
+
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    strokeChain(PALM_CHAIN, idle, 1.2 * unit);
+    FINGER_CHAINS.forEach((chain, finger) => {
+        const isOn = fingerStates[finger];
+        strokeChain(chain, isOn ? accent : idle, (isOn ? 2 : 1.3) * unit);
+    });
+    points.forEach(([x, y], pointIndex) => {
+        if (!FINGER_TIPS.includes(pointIndex)) dot(x, y, 1.4 * unit, "rgba(240, 234, 255, 0.8)");
+    });
+
+    // Thumb–index link fades in as the fingers approach a pinch.
+    const [thumbX, thumbY] = points[4];
+    const [indexX, indexY] = points[8];
+    const isPinchMode = mode === "pinch" || mode === "drag";
+    const approach = Math.min(1, Math.max(0, (1.1 - pinchRatio) / (1.1 - PINCH_START_DISTANCE)));
+    if (isPinchMode || approach > 0) {
+        ctx.beginPath();
+        ctx.moveTo(thumbX, thumbY);
+        ctx.lineTo(indexX, indexY);
+        ctx.setLineDash(isPinchMode ? [] : [3 * unit, 3 * unit]);
+        ctx.strokeStyle = isPinchMode ? accent : `rgba(151, 255, 220, ${0.25 + approach * 0.6})`;
+        ctx.lineWidth = (isPinchMode ? 2.4 : 1.4) * unit;
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    ctx.shadowColor = accent;
+    FINGER_TIPS.forEach((tipIndex, finger) => {
+        const isOn = fingerStates[finger];
+        const [x, y] = points[tipIndex];
+        ctx.shadowBlur = isOn ? 8 * ratio : 0;
+        dot(x, y, (isOn ? 3.2 : 2.2) * unit, isOn ? accent : idle);
+    });
+    ctx.shadowBlur = 0;
+
+    if (isPinchMode) {
+        ctx.beginPath();
+        ctx.arc((thumbX + indexX) / 2, (thumbY + indexY) / 2, 6 * unit, 0, Math.PI * 2);
+        ctx.strokeStyle = accent;
+        ctx.lineWidth = 1.5 * unit;
+        ctx.stroke();
+    }
+}
+
+function resetHandReadout() {
+    clearOverlay();
+    renderFingerChips([false, false, false, false, false]);
+    cameraPanel?.classList.remove("has-hand");
+    flashUntil = 0;
+    setGesture("searching");
+}
+
+function markClick() {
+    cursor.classList.remove("is-snapping");
+    void cursor.offsetWidth;
+    cursor.classList.add("is-snapping");
+    flashGesture("클릭!");
 }
 
 function updateCursor(x, y, isPinching) {
@@ -163,9 +354,7 @@ function updateIndexGesture(hand, palmWidth, x, y, isFist) {
     if (shouldClick) {
         lastSnapAt = now;
         target.click();
-        cursor.classList.remove("is-snapping");
-        void cursor.offsetWidth;
-        cursor.classList.add("is-snapping");
+        markClick();
     }
     return { isActive: false, didClick: Boolean(shouldClick) };
 }
@@ -178,9 +367,7 @@ function completePendingClick() {
     if (shouldClick) {
         lastSnapAt = now;
         target.click();
-        cursor.classList.remove("is-snapping");
-        void cursor.offsetWidth;
-        cursor.classList.add("is-snapping");
+        markClick();
     }
     return Boolean(shouldClick);
 }
@@ -223,9 +410,10 @@ function detectFist(hand) {
 
     cursor.classList.add("is-fist");
     if (!fistStartedAt) fistStartedAt = now;
-    if (!fistTriggered && !pinching && now - fistStartedAt >= 480) {
+    if (!fistTriggered && !pinching && now - fistStartedAt >= FIST_HOLD_MS) {
         fistTriggered = true;
         goBackInSite();
+        flashGesture("뒤로 가기");
     }
     return true;
 }
@@ -253,7 +441,8 @@ function detectOpenPalmSwipe(hand, isFist, isPinching) {
     const palmY = hand[9].y;
     openPalmSamples.push({ x: palmX, y: palmY, time: now });
     openPalmSamples = openPalmSamples.filter((sample) => now - sample.time <= 850).slice(-18);
-    if (openPalmSamples.length < 5 || now - lastPalmSwipeAt < 850) return false;
+    // From here on the hand is an open palm; the return value reports that, not the swipe.
+    if (openPalmSamples.length < 5 || now - lastPalmSwipeAt < 850) return true;
 
     const first = openPalmSamples[0];
     const last = openPalmSamples[openPalmSamples.length - 1];
@@ -266,7 +455,7 @@ function detectOpenPalmSwipe(hand, isFist, isPinching) {
     const directionConsistency = horizontalTravel ? Math.abs(deltaX) / horizontalTravel : 0;
     const isDeliberateSwipe = elapsed >= 140 && Math.abs(deltaX) >= 0.105 &&
         Math.abs(deltaX) > Math.abs(deltaY) * 1.45 && directionConsistency >= 0.62;
-    if (!isDeliberateSwipe) return false;
+    if (!isDeliberateSwipe) return true;
 
     const currentPage = document.getElementById("pageStack")?.dataset.page || PAGE_ORDER[0];
     const currentIndex = PAGE_ORDER.indexOf(currentPage);
@@ -275,9 +464,10 @@ function detectOpenPalmSwipe(hand, isFist, isPinching) {
     const targetPage = PAGE_ORDER[nextIndex];
     openPalmSamples = [];
     lastPalmSwipeAt = now;
-    if (!targetPage) return false;
+    if (!targetPage) return true;
 
     document.querySelector(`[data-page-target="${targetPage}"]`)?.click();
+    flashGesture(nextIndex > currentIndex ? "다음 페이지 ›" : "‹ 이전 페이지");
     return true;
 }
 
@@ -307,12 +497,38 @@ function trackFrame() {
                 fistTriggered = false;
                 cursor.classList.remove("is-fist");
             }
-            detectOpenPalmSwipe(hand, isFist, indexGesture.isActive);
+            const isOpenPalm = detectOpenPalmSwipe(hand, isFist, indexGesture.isActive);
             cursor.classList.add("is-visible");
             updateCursor(x, y, pinching);
+
+            cameraPanel?.classList.add("has-hand");
+            let mode = "point";
+            let hold = 0;
+            let label;
+            if (isFist) {
+                mode = "fist";
+                hold = fistTriggered ? 1 : (performance.now() - fistStartedAt) / FIST_HOLD_MS;
+                if (fistTriggered) label = "주먹 · 손을 펴면 다시 사용";
+            } else if (pinching && movedDistance >= DRAG_START_PX) {
+                mode = "drag";
+            } else if (indexGesture.isActive) {
+                mode = "pinch";
+            } else if (isOpenPalm) {
+                mode = "palm";
+            }
+            // Chips light the fingers that are raised, plus the two doing the pinch.
+            const fingers = readFingerStates(hand);
+            if (mode === "pinch" || mode === "drag") fingers[0] = fingers[1] = true;
+            renderFingerChips(fingers);
+            setGesture(mode, hold, label);
+            drawHand(hand, mode, indexPinchDistance);
         } else {
             completePendingClick();
             releaseGesture();
+            clearOverlay();
+            renderFingerChips([false, false, false, false, false]);
+            cameraPanel?.classList.remove("has-hand");
+            setGesture("searching");
         }
     }
     animationFrame = requestAnimationFrame(trackFrame);
@@ -343,7 +559,8 @@ async function startHandControl() {
         });
         video.srcObject = stream;
         await video.play();
-        video.classList.add("is-visible");
+        resetHandReadout();
+        cameraPanel.classList.add("is-visible");
         enabled = true;
         button.classList.add("is-active");
         const label = button.querySelector(".hand-control-label");
@@ -351,7 +568,8 @@ async function startHandControl() {
         document.getElementById("handControlState").textContent = "손 인식 활성화";
         button.setAttribute("aria-pressed", "true");
         button.setAttribute("aria-label", "카메라 끄기");
-        setStatus("검지+엄지를 짧게 모으면 클릭 · 길게 모은 채 움직이면 드래그 · 주먹을 쥐면 뒤로 가기");
+        // No how-to panel once the camera is on; the camera preview shows each gesture live.
+        setStatus("");
         animationFrame = requestAnimationFrame(trackFrame);
     } catch (error) {
         console.error("Hand tracking could not start", error);
@@ -371,7 +589,8 @@ function stopHandControl() {
     stream = null;
     lastVideoTime = -1;
     video.srcObject = null;
-    video.classList.remove("is-visible");
+    cameraPanel?.classList.remove("is-visible");
+    resetHandReadout();
     button.classList.remove("is-active");
     const label = button.querySelector(".hand-control-label");
     if (label) label.textContent = "Hand";

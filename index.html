@@ -11,8 +11,8 @@
   <title>마테마티카</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="stylesheet" href="style.css?v=20261115-1">
-  <link rel="stylesheet" href="sanctum.css?v=20261116-1">
+  <link rel="stylesheet" href="style.css?v=20261116-1">
+  <link rel="stylesheet" href="sanctum.css?v=20261116-2">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -158,7 +158,14 @@
     <button id="handControlButton" class="hand-control-button" type="button" aria-pressed="false" aria-label="Hand · 손 인식 카메라 켜기" title="손으로 조작하기"><svg aria-hidden="true"><use href="#icon-hand"/></svg><span><span class="hand-control-label">Hand</span><small id="handControlState">손으로 조작하기</small></span><span class="hand-control-dot" aria-hidden="true"></span></button>
   </footer>
   <div id="handStatus" class="hand-status" role="status" aria-live="polite"></div>
-  <video id="handCamera" class="hand-camera" autoplay muted playsinline aria-hidden="true"></video>
+  <div id="handCameraPanel" class="hand-camera" data-mode="searching" aria-hidden="true">
+    <video id="handCamera" class="hand-camera-video" autoplay muted playsinline></video>
+    <canvas id="handOverlay" class="hand-camera-overlay"></canvas>
+    <div class="hand-fingers">
+      <span data-finger="0">엄지</span><span data-finger="1">검지</span><span data-finger="2">중지</span><span data-finger="3">약지</span><span data-finger="4">소지</span>
+    </div>
+    <div id="handGesture" class="hand-gesture"><span id="handGestureText">손을 보여 주세요</span></div>
+  </div>
   <div id="handCursor" class="hand-cursor" aria-hidden="true"></div>
 
   <div id="cardModal" class="card-modal hidden" aria-hidden="true">
@@ -246,7 +253,7 @@
   </template>
 
   <script src="script.js?v=20261115-4"></script>
-  <script type="module" src="hand-tracking.js?v=20261115-1"></script>
+  <script type="module" src="hand-tracking.js?v=20261116-1"></script>
 </body>
 </html>
 

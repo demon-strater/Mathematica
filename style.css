@@ -1183,9 +1183,9 @@ body::after {
     right: 24px;
     bottom: 20px;
     z-index: 10018;
-    width: min(240px, calc(100vw - 48px));
+    width: min(180px, calc(100vw - 48px));
     aspect-ratio: 4 / 3;
-    object-fit: cover;
+    overflow: hidden;
     border: 1px solid rgba(183, 164, 255, 0.52);
     border-radius: 14px;
     background: #080711;
@@ -1193,15 +1193,97 @@ body::after {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transform: scaleX(-1) translateY(-6px);
-    transform-origin: center;
+    transform: translateY(-6px);
     transition: opacity 0.24s ease, transform 0.24s ease, visibility 0.24s;
 }
 
 .hand-camera.is-visible {
     opacity: 1;
     visibility: visible;
-    transform: scaleX(-1) translateY(0);
+    transform: translateY(0);
+}
+
+/* Video and landmark overlay are mirrored together so the hand moves like a mirror;
+   the text layers above them stay readable. */
+.hand-camera-video,
+.hand-camera-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    transform: scaleX(-1);
+}
+.hand-camera-video { object-fit: cover; opacity: 0.82; }
+
+.hand-camera { --hand-accent: #a99cbd; }
+.hand-camera[data-mode="point"] { --hand-accent: #97ffdc; }
+.hand-camera[data-mode="pinch"],
+.hand-camera[data-mode="drag"] { --hand-accent: #70ffcc; }
+.hand-camera[data-mode="fist"] { --hand-accent: #ffbe70; }
+.hand-camera[data-mode="palm"] { --hand-accent: #c9b2ff; }
+
+.hand-fingers {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+}
+.hand-fingers span {
+    padding: 2px 4px;
+    border: 1px solid rgba(214, 200, 255, 0.18);
+    border-radius: 999px;
+    background: rgba(10, 9, 23, 0.62);
+    color: rgba(214, 200, 255, 0.42);
+    font-size: 8px;
+    font-weight: 600;
+    line-height: 1.2;
+    transition: color 0.12s, background 0.12s, border-color 0.12s;
+}
+.hand-fingers span.is-on {
+    border-color: color-mix(in srgb, var(--hand-accent) 75%, transparent);
+    background: color-mix(in srgb, var(--hand-accent) 24%, rgba(10, 9, 23, 0.85));
+    color: color-mix(in srgb, var(--hand-accent) 45%, #fff);
+}
+.hand-camera:not(.has-hand) .hand-fingers { opacity: 0.45; }
+
+.hand-gesture {
+    --hold: 0;
+    position: absolute;
+    left: 50%;
+    bottom: 6px;
+    translate: -50% 0;
+    max-width: calc(100% - 12px);
+    overflow: hidden;
+    padding: 3px 9px;
+    border: 1px solid color-mix(in srgb, var(--hand-accent) 55%, transparent);
+    border-radius: 999px;
+    background: rgba(10, 9, 23, 0.8);
+    color: var(--hand-accent);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+/* Fist hold progress fills the chip from the left until "back" fires. */
+.hand-gesture::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--hand-accent) 26%, transparent);
+    transform: scaleX(var(--hold));
+    transform-origin: left;
+}
+.hand-gesture > span { position: relative; }
+.hand-gesture.is-flash { --hand-accent: #ffe780; animation: handGestureFlash 0.5s ease-out; }
+
+@keyframes handGestureFlash {
+    0% { transform: scale(1.12); }
+    100% { transform: scale(1); }
 }
 
 .hand-cursor {
@@ -2271,11 +2353,11 @@ body::after {
     .hand-camera {
         right: 12px;
         bottom: 12px;
-        width: min(164px, 42vw);
+        width: min(132px, 38vw);
     }
     .hand-status {
         right: 12px;
-        bottom: calc(min(164px, 42vw) * 0.75 + 24px);
+        bottom: calc(min(132px, 38vw) * 0.75 + 24px);
         max-width: min(300px, calc(100vw - 24px));
     }
 

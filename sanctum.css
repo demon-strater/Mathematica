@@ -138,7 +138,7 @@ p.section-eyebrow { margin: 0 0 5px; }
 .hand-control-button.is-active { background: linear-gradient(135deg, #243c3ce6, #18272fe6); border-color: #8bd9c37d; box-shadow: 0 0 20px #70ffcc14; }
 .hand-control-button.is-active svg { color: #a6ddcc; }
 .hand-control-button[aria-busy="true"] .hand-control-dot { background: transparent; width: 10px; height: 10px; border: 1px solid #d9c5f63b; border-top-color: #d9c5f6; animation: orbitTurn 1s linear infinite; }
-.hand-status { display: block !important; right: max(24px, env(safe-area-inset-right)); bottom: calc(max(20px, env(safe-area-inset-bottom)) + 246px); padding: 14px 18px; border: 1px solid var(--etching); line-height: 1.8; background: #171322f5; }
+.hand-status { display: block !important; right: max(24px, env(safe-area-inset-right)); bottom: calc(max(20px, env(safe-area-inset-bottom)) + 199px); padding: 14px 18px; border: 1px solid var(--etching); line-height: 1.8; background: #171322f5; }
 .hand-status:not(.is-visible) { visibility: hidden; }
 .hand-camera { right: max(24px, env(safe-area-inset-right)); bottom: calc(max(20px, env(safe-area-inset-bottom)) + 52px); border-radius: 12px; }
 
@@ -226,8 +226,11 @@ p.section-eyebrow { margin: 0 0 5px; }
     .hand-control-button > span:not(.hand-control-dot) { display: none; }
     .hand-control-button > svg { width: 19px; height: 19px; }
     .hand-control-dot { position: absolute; top: 8px; right: 8px; margin: 0; }
-    .hand-camera { bottom: calc(max(16px, env(safe-area-inset-bottom)) + 56px); width: 144px; right: max(16px, env(safe-area-inset-right)); }
-    .hand-status { bottom: calc(max(16px, env(safe-area-inset-bottom)) + 174px); right: max(16px, env(safe-area-inset-right)); max-width: calc(100vw - 32px); font-size: 11px; }
+    .hand-camera { bottom: calc(max(16px, env(safe-area-inset-bottom)) + 56px); width: 124px; right: max(16px, env(safe-area-inset-right)); }
+    .hand-camera .hand-fingers { gap: 2px; top: 4px; left: 3px; right: 3px; }
+    .hand-camera .hand-fingers span { padding: 1px 2px; font-size: 7px; }
+    .hand-camera .hand-gesture { bottom: 4px; padding: 2px 7px; font-size: 9px; }
+    .hand-status { bottom: calc(max(16px, env(safe-area-inset-bottom)) + 159px); right: max(16px, env(safe-area-inset-right)); max-width: calc(100vw - 32px); font-size: 11px; }
     .spread-card { width: min(33vw, 140px); }
     .spread-card.card-slot-0-5 { --tx: -21vw; }
     .spread-card.card-slot-1-5 { --tx: -10.5vw; }
