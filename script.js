@@ -1780,7 +1780,15 @@ function bindMobileFullscreen() {
 
 function bindEvents() {
     bindMobileFullscreen();
-    document.getElementById("newPackButton").addEventListener("click", prepareNewPack);
+    const newPackButton = document.getElementById("newPackButton");
+    newPackButton.addEventListener("click", () => {
+        // Restart the press pulse so rapid clicks each show it.
+        newPackButton.classList.remove("is-pressed");
+        void newPackButton.offsetWidth;
+        newPackButton.classList.add("is-pressed");
+        prepareNewPack();
+    });
+    newPackButton.addEventListener("animationend", () => newPackButton.classList.remove("is-pressed"));
     document.getElementById("openPackButton").addEventListener("click", openPackFromButton);
     document.getElementById("inventorySort")?.addEventListener("change", renderInventory);
     document.querySelectorAll(".page-tab").forEach((button) => {

@@ -127,6 +127,14 @@ p.section-eyebrow { margin: 0 0 5px; }
 .pack-panel.has-revealed .archive-action-open { opacity: 0; visibility: hidden; }
 /* New Pack mirrors the tier list in the left margin of the stage. */
 .archive-action-new { position: absolute; left: 3%; top: 50%; translate: 0 -50%; z-index: 6; }
+/* Open dims while the pack opens; New Pack has no lasting change, so it gets a clearly darker
+   press colour and a short press pulse on every click (mouse, touch or hand gesture). */
+.archive-action-new:active:not(:disabled) { --frame-ink: #15111d; --frame-edge: #a28dc2; --frame-detail: #b9a6d6; color: #ddd3ee; }
+.archive-action-new.is-pressed { animation: archivePress .36s ease-out; }
+@keyframes archivePress {
+    0%, 100% { scale: 1; filter: none; }
+    30% { scale: .94; filter: brightness(.72); }
+}
 /* No dock: the footer is a click-through overlay holding a small Hand button at the bottom right. */
 .command-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10019; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 max(24px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(28px, env(safe-area-inset-left)); pointer-events: none; }
 .hand-control-button { position: relative; inset: auto; margin-left: auto; pointer-events: auto; display: flex; align-items: center; gap: 7px; min-width: 0; min-height: 40px; padding: 0 14px 0 12px; border-radius: 999px; border: 1px solid #a994c640; background: #1a1727d9; color: #dbd0ed; box-shadow: 0 6px 20px #0004; backdrop-filter: blur(14px); font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: none; cursor: pointer; animation: none; transition: transform .16s, background .2s, border-color .2s, box-shadow .2s; }
