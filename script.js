@@ -48,7 +48,7 @@ const FLAVOR_BY_RARITY = {
     Legendary: "수학 그 자체의 상징처럼 다뤄지는 전설적 공식 카드.",
 };
 
-const GITHUB_CONTENTS_API = "https://api.github.com/repos/demon-strater/interation-practice/contents?ref=main";
+const GITHUB_CONTENTS_API = "https://api.github.com/repos/demon-strater/Mathematica/contents?ref=main";
 const DEFAULT_CARD_ART = "";
 const DEFAULT_CARD_BACK = "back.png?v=20261031";
 const DEFAULT_CARD_BACK_KEYWORD = "back";
