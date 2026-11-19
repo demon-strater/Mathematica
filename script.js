@@ -48,20 +48,9 @@ const FLAVOR_BY_RARITY = {
     Legendary: "수학 그 자체의 상징처럼 다뤄지는 전설적 공식 카드.",
 };
 
-const DEFAULT_CARD_ART = "";
 const DEFAULT_CARD_BACK = "back.png?v=20261031";
 const DEFAULT_CARD_BACK_KEYWORD = "back";
 const DEFAULT_PACK_ART = "pack.png";
-const DETAIL_COPY = {
-    euler_identity: {
-        origin:
-            "1748년 레온하르트 오일러가 정리한 식으로, 수학의 핵심 상수 다섯 개를 하나의 관계식으로 묶는다는 점에서 특히 유명해졌습니다.",
-        core:
-            "오일러 공식 e^(ix) = cos(x) + i sin(x)에서 x에 pi를 대입하면 e^(i*pi) = -1이 되고, 이를 정리하면 e^(i*pi) + 1 = 0이 됩니다.",
-        significance:
-            "0, 1, i, pi, e를 한 줄로 연결한다는 점에서 상징성이 매우 큽니다. 대수, 기하, 복소해석의 감각이 응축되어 있어 수학적 아름다움의 대표 예시로 자주 언급됩니다.",
-    },
-};
 
 const STORAGE_KEY = "formula-relics-tcg-inventory-v6";
 const CATALOG_ORDER_KEY = "formula-relics-tcg-catalog-order-v1";
@@ -81,7 +70,7 @@ const FORMULA_LIBRARY = [
             "history": 100,
             "value": 80
         },
-        "latex": "오일러 항등식"
+        "latex": "e^(iπ) + 1 = 0"
     },
     {
         "id": "euler_lagrange",
@@ -96,7 +85,7 @@ const FORMULA_LIBRARY = [
             "history": 100,
             "value": 100
         },
-        "latex": "오일러-라그랑주 방정식"
+        "latex": "d/dt(∂L/∂q̇) − ∂L/∂q = 0"
     },
     {
         "id": "mass_energy",
@@ -111,7 +100,7 @@ const FORMULA_LIBRARY = [
             "history": 100,
             "value": 100
         },
-        "latex": "질량-에너지 등가 원리"
+        "latex": "E = mc²"
     },
     {
         "id": "dirac_equation",
@@ -126,7 +115,7 @@ const FORMULA_LIBRARY = [
             "history": 90,
             "value": 90
         },
-        "latex": "디랙 방정식"
+        "latex": "(iγᵘ∂ᵤ − m)ψ = 0"
     },
     {
         "id": "maxwell_equations",
@@ -141,7 +130,7 @@ const FORMULA_LIBRARY = [
             "history": 90,
             "value": 90
         },
-        "latex": "맥스웰 방정식"
+        "latex": "∇·E = ρ/ε₀"
     },
     {
         "id": "central_limit_theorem",
@@ -156,7 +145,7 @@ const FORMULA_LIBRARY = [
             "history": 100,
             "value": 70
         },
-        "latex": "중심 극한 정리"
+        "latex": "√n(X̄ − μ)/σ → N(0,1)"
     },
     {
         "id": "fundamental_theorem_calculus",
@@ -171,7 +160,7 @@ const FORMULA_LIBRARY = [
             "history": 100,
             "value": 90
         },
-        "latex": "미적분학의 기본 정리"
+        "latex": "∫ₐᵇ f(x)dx = F(b) − F(a)"
     },
     {
         "id": "bell_inequality",
@@ -186,7 +175,7 @@ const FORMULA_LIBRARY = [
             "history": 80,
             "value": 70
         },
-        "latex": "벨의 부등식"
+        "latex": "|S| ≤ 2"
     },
     {
         "id": "shannon_entropy",
@@ -201,7 +190,7 @@ const FORMULA_LIBRARY = [
             "history": 80,
             "value": 80
         },
-        "latex": "섀넌 엔트로피"
+        "latex": "H(X) = −Σ p(x) log p(x)"
     },
     {
         "id": "standard_model",
@@ -216,7 +205,7 @@ const FORMULA_LIBRARY = [
             "history": 80,
             "value": 80
         },
-        "latex": "표준 모형 라그랑지안"
+        "latex": "L = L_gauge + L_fermion + L_Higgs"
     },
     {
         "id": "poincare_conjecture",
@@ -231,7 +220,7 @@ const FORMULA_LIBRARY = [
             "history": 80,
             "value": 80
         },
-        "latex": "푸앵카레 추측"
+        "latex": "π₁(M) = 0 ⇒ M ≅ S³"
     },
     {
         "id": "navier_stokes",
@@ -246,7 +235,7 @@ const FORMULA_LIBRARY = [
             "history": 90,
             "value": 70
         },
-        "latex": "나비에-스토크스 방정식"
+        "latex": "ρ(∂v/∂t + v·∇v) = −∇p + μ∇²v + f"
     },
     {
         "id": "rsa",
@@ -261,7 +250,7 @@ const FORMULA_LIBRARY = [
             "history": 80,
             "value": 70
         },
-        "latex": "RSA 암호 알고리즘"
+        "latex": "c ≡ mᵉ (mod n)"
     },
     {
         "id": "gauss_bonnet",
@@ -276,7 +265,7 @@ const FORMULA_LIBRARY = [
             "history": 90,
             "value": 60
         },
-        "latex": "가우스-보네 정리"
+        "latex": "∫ K dA + ∮ k_g ds = 2πχ"
     },
     {
         "id": "newton_gravitation",
@@ -291,7 +280,7 @@ const FORMULA_LIBRARY = [
             "history": 60,
             "value": 70
         },
-        "latex": "뉴턴의 만유인력 법칙"
+        "latex": "F = Gm₁m₂/r²"
     },
     {
         "id": "euler_polyhedron",
@@ -306,7 +295,7 @@ const FORMULA_LIBRARY = [
             "history": 80,
             "value": 60
         },
-        "latex": "오일러의 다면체 정리"
+        "latex": "V − E + F = 2"
     },
     {
         "id": "black_scholes",
@@ -321,7 +310,7 @@ const FORMULA_LIBRARY = [
             "history": 80,
             "value": 80
         },
-        "latex": "블랙-숄즈 공식"
+        "latex": "C = S N(d₁) − K e^(−rT) N(d₂)"
     },
     {
         "id": "pagerank",
@@ -336,7 +325,7 @@ const FORMULA_LIBRARY = [
             "history": 90,
             "value": 80
         },
-        "latex": "페이지랭크 알고리즘"
+        "latex": "PR(i) = (1−d)/N + dΣ PR(j)/L(j)"
     },
     {
         "id": "simplex",
@@ -351,7 +340,7 @@ const FORMULA_LIBRARY = [
             "history": 70,
             "value": 60
         },
-        "latex": "심플렉스 알고리즘"
+        "latex": "max cᵀx, Ax ≤ b, x ≥ 0"
     },
     {
         "id": "archimedes_principle",
@@ -366,7 +355,7 @@ const FORMULA_LIBRARY = [
             "history": 60,
             "value": 90
         },
-        "latex": "아르키메데스의 원리"
+        "latex": "F_b = ρgV"
     },
     {
         "id": "kepler_laws",
@@ -381,7 +370,7 @@ const FORMULA_LIBRARY = [
             "history": 70,
             "value": 70
         },
-        "latex": "케플러의 법칙"
+        "latex": "T² ∝ a³"
     },
     {
         "id": "ohm_law",
@@ -396,7 +385,7 @@ const FORMULA_LIBRARY = [
             "history": 60,
             "value": 70
         },
-        "latex": "옴의 법칙"
+        "latex": "V = IR"
     },
     {
         "id": "coulomb_law",
@@ -411,7 +400,7 @@ const FORMULA_LIBRARY = [
             "history": 60,
             "value": 60
         },
-        "latex": "쿨롱의 법칙"
+        "latex": "F = kq₁q₂/r²"
     },
     {
         "id": "hooke_law",
@@ -426,7 +415,7 @@ const FORMULA_LIBRARY = [
             "history": 60,
             "value": 70
         },
-        "latex": "훅의 법칙"
+        "latex": "F = −kx"
     },
     {
         "id": "pythagorean_theorem",
@@ -441,7 +430,7 @@ const FORMULA_LIBRARY = [
             "history": 100,
             "value": 90
         },
-        "latex": "피타고라스 정리"
+        "latex": "a² + b² = c²"
     },
     {
         "id": "snell_law",
@@ -456,7 +445,7 @@ const FORMULA_LIBRARY = [
             "history": 60,
             "value": 60
         },
-        "latex": "스넬의 법칙"
+        "latex": "n₁ sin θ₁ = n₂ sin θ₂"
     },
     {
         "id": "doppler_effect",
@@ -471,7 +460,7 @@ const FORMULA_LIBRARY = [
             "history": 60,
             "value": 60
         },
-        "latex": "도플러 효과"
+        "latex": "f′ = f(v + v_o)/(v − v_s)"
     },
     {
         "id": "nash_equilibrium",
@@ -486,7 +475,7 @@ const FORMULA_LIBRARY = [
             "history": 80,
             "value": 70
         },
-        "latex": "내시 균형"
+        "latex": "uᵢ(sᵢ*,s₋ᵢ*) ≥ uᵢ(sᵢ,s₋ᵢ*)"
     }
 ];
 
@@ -494,6 +483,8 @@ const STARTER_IDS = ["shannon_entropy", "poincare_conjecture", "standard_model",
 
 const library = FORMULA_LIBRARY.map(enrichFormula);
 const formulaById = Object.fromEntries(library.map((card) => [card.id, card]));
+
+const INVENTORY_V5_IDS = {"euler_identity": "euler_identity", "pythagorean_theorem": "euler_lagrange", "quadratic_formula": "mass_energy", "fundamental_theorem_calculus": "dirac_equation", "newton_second_law": "maxwell_equations", "mass_energy": "central_limit_theorem", "bayes_theorem": "fundamental_theorem_calculus", "gaussian_integral": "bell_inequality", "shannon_entropy": "shannon_entropy", "bell_inequality": "standard_model", "navier_stokes": "poincare_conjecture", "black_scholes": "navier_stokes", "riemann_zeta": "rsa", "euclid_primes": "gauss_bonnet", "de_moivre": "newton_gravitation", "binomial_theorem": "euler_polyhedron", "green_theorem": "black_scholes", "heron_formula": "pagerank", "law_of_cosines": "simplex", "ceva_theorem": "archimedes_principle", "pick_theorem": "kepler_laws", "inclusion_exclusion": "ohm_law", "eulers_formula": "coulomb_law", "cauchy_schwarz": "hooke_law", "stokes_theorem": "pythagorean_theorem", "maxwell_equations": "snell_law", "wave_equation": "doppler_effect", "heat_equation": "nash_equilibrium", "taylor_series": "bell_inequality", "lagrange_multiplier": "shannon_entropy", "euler_lagrange": "standard_model", "gauss_divergence": "poincare_conjecture", "central_limit_theorem": "navier_stokes"};
 
 const state = {
     inventory: loadInventory(),
@@ -552,15 +543,6 @@ function escapeAssetPath(path) {
     return encodeURI(path).replace(/#/g, "%23");
 }
 
-function imageExists(path) {
-    return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve(true);
-        img.onerror = () => resolve(false);
-        img.src = `${escapeAssetPath(path)}?v=${Date.now()}`;
-    });
-}
-
 function applyPackArtwork() {
     document.documentElement.style.setProperty("--pack-art", `url("${escapeAssetPath(DEFAULT_PACK_ART)}")`);
 }
@@ -594,7 +576,6 @@ function safeStorageRemove(key) {
 }
 
 function ensureStarterInventory(entries) {
-    const starterIds = new Set(STARTER_IDS);
     const next = [...entries];
     const existingIds = new Set(next.map((entry) => entry.formulaId));
     let timestamp = Date.now();
@@ -611,7 +592,6 @@ function ensureStarterInventory(entries) {
     return next;
 }
 
-const INVENTORY_V5_IDS = {"euler_identity": "euler_identity", "pythagorean_theorem": "euler_lagrange", "quadratic_formula": "mass_energy", "fundamental_theorem_calculus": "dirac_equation", "newton_second_law": "maxwell_equations", "mass_energy": "central_limit_theorem", "bayes_theorem": "fundamental_theorem_calculus", "gaussian_integral": "bell_inequality", "shannon_entropy": "shannon_entropy", "bell_inequality": "standard_model", "navier_stokes": "poincare_conjecture", "black_scholes": "navier_stokes", "riemann_zeta": "rsa", "euclid_primes": "gauss_bonnet", "de_moivre": "newton_gravitation", "binomial_theorem": "euler_polyhedron", "green_theorem": "black_scholes", "heron_formula": "pagerank", "law_of_cosines": "simplex", "ceva_theorem": "archimedes_principle", "pick_theorem": "kepler_laws", "inclusion_exclusion": "ohm_law", "eulers_formula": "coulomb_law", "cauchy_schwarz": "hooke_law", "stokes_theorem": "pythagorean_theorem", "maxwell_equations": "snell_law", "wave_equation": "doppler_effect", "heat_equation": "nash_equilibrium", "taylor_series": "bell_inequality", "lagrange_multiplier": "shannon_entropy", "euler_lagrange": "standard_model", "gauss_divergence": "poincare_conjecture", "central_limit_theorem": "navier_stokes"};
 
 function loadInventory() {
     const current = safeStorageGet(STORAGE_KEY);
