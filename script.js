@@ -1807,7 +1807,7 @@ function bindEvents() {
 // scans the QR code right after a deploy can get the old page. Compare with the
 // live page and, if it has moved on, reload once under a cache-busting URL.
 function reloadIfOutdated() {
-    const assetVersions = (source) => [...source.matchAll(/(?:style\.css|sanctum\.css|script\.js|hand-tracking\.js)\?v=([\w-]+)/g)].map((m) => m[1]).join("_");
+    const assetVersions = (source) => [...source.matchAll(/(?:style\.css|sanctum\.css|script\.js|hand-tracking\.js|game\.js|game\.css)\?v=([\w-]+)/g)].map((m) => m[1]).join("_");
     const current = assetVersions(document.head.innerHTML + document.body.innerHTML);
     if (!current) return;
     fetch(location.pathname, { cache: "no-store" })
@@ -1825,8 +1825,7 @@ function reloadIfOutdated() {
 
 function init() {
     reloadIfOutdated();
-    // Render immediately from bundled assets. Remote artwork discovery must
-    // never block pack interaction or the collected-card catalog.
+    // Artwork is explicitly assigned by each card’s art field.
     applyPackArtwork([]);
 
     showPage("opening");

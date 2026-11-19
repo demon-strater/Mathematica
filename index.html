@@ -13,6 +13,7 @@
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="stylesheet" href="style.css?v=20261116-3">
   <link rel="stylesheet" href="sanctum.css?v=20261116-3">
+  <link rel="stylesheet" href="game.css?v=20261120-1">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+Garamond:ital,wght@1,600;1,700&family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -44,9 +45,10 @@
           <div><p class="brand-eyebrow">THE ARCHIVE OF WONDERS</p><h1 class="glitch" data-text="MATHEMATICA">Mathematica</h1></div>
         </div>
         <nav class="page-nav" aria-label="Section navigation">
-          <button class="page-tab is-active" type="button" data-page-target="opening" aria-pressed="true"><span class="nav-index" aria-hidden="true">I</span><svg aria-hidden="true"><use href="#icon-star"/></svg><span>Pack Opening</span></button>
-          <button class="page-tab" type="button" data-page-target="catalog" aria-pressed="false"><span class="nav-index" aria-hidden="true">II</span><svg aria-hidden="true"><use href="#icon-cards"/></svg><span>Collected Cards</span></button>
-          <button class="page-tab" type="button" data-page-target="about" aria-pressed="false"><span class="nav-index" aria-hidden="true">III</span><svg aria-hidden="true"><use href="#icon-book"/></svg><span>About</span></button>
+          <button class="page-tab is-active" type="button" data-page-target="opening" aria-pressed="true"><span class="nav-index" aria-hidden="true">I</span><svg aria-hidden="true"><use href="#icon-star"/></svg><span class="nav-long">Pack Opening</span><span class="nav-short">Pack</span></button>
+          <button class="page-tab" type="button" data-page-target="catalog" aria-pressed="false"><span class="nav-index" aria-hidden="true">II</span><svg aria-hidden="true"><use href="#icon-cards"/></svg><span class="nav-long">Collected Cards</span><span class="nav-short">Cards</span></button>
+          <button class="page-tab" type="button" data-page-target="game" aria-pressed="false"><span class="nav-index" aria-hidden="true">III</span><span>Game</span></button>
+          <button class="page-tab" type="button" data-page-target="about" aria-pressed="false"><span class="nav-index" aria-hidden="true">IV</span><svg aria-hidden="true"><use href="#icon-book"/></svg><span>About</span></button>
         </nav>
         <div class="archive-counter"><svg aria-hidden="true"><use href="#icon-cards"/></svg><div><span>COLLECTION</span><strong id="collectionCount">00 <small>/ 28</small></strong></div></div>
       </div>
@@ -120,9 +122,14 @@
         </section>
       </section>
 
+      <section class="page-view chrono-page" data-page="game" aria-label="Chrono Curling" hidden>
+        <header class="panel-header page-heading"><div class="chapter-heading"><span class="chapter-number">03</span><h2 class="panel-title">Chrono Curling</h2></div><button id="chronoHelp" type="button" aria-label="게임 조작 안내">?</button></header>
+        <div id="chronoGame" class="chrono-game"></div>
+      </section>
+
       <section class="page-view" data-page="about" aria-label="About Mathematica" hidden>
           <div class="panel-header page-heading">
-            <div class="chapter-heading"><span class="chapter-number">03</span><h2 class="panel-title">The Story of Mathematica</h2></div>
+            <div class="chapter-heading"><span class="chapter-number">04</span><h2 class="panel-title">The Story of Mathematica</h2></div>
           </div>
         <section class="panel about-panel">
           <div class="about-layout">
@@ -252,8 +259,9 @@
     </article>
   </template>
 
-  <script src="script.js?v=20261120-1"></script>
-  <script type="module" src="hand-tracking.js?v=20261116-3"></script>
+  <script src="script.js?v=20261120-2"></script>
+  <script src="game.js?v=20261120-1"></script>
+  <script type="module" src="hand-tracking.js?v=20261120-1"></script>
 </body>
 </html>
 
