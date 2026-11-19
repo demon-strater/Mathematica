@@ -48,48 +48,10 @@ const FLAVOR_BY_RARITY = {
     Legendary: "수학 그 자체의 상징처럼 다뤄지는 전설적 공식 카드.",
 };
 
-const GITHUB_CONTENTS_API = "https://api.github.com/repos/demon-strater/Mathematica/contents?ref=main";
 const DEFAULT_CARD_ART = "";
 const DEFAULT_CARD_BACK = "back.png?v=20261031";
 const DEFAULT_CARD_BACK_KEYWORD = "back";
 const DEFAULT_PACK_ART = "pack.png";
-const BUNDLED_CARD_ARTWORK = [
-    "2.오일러 항등식.png",
-    "3.오일러-라그랑주 방정식.png",
-    "4.질량-애너지 보존의 원리.png",
-    "5.디렉 방정식.png",
-    "6.멕스웰 방정식.png",
-    "7.중심 극한 정리.png",
-    "8.미적분학의 기본 정리.png",
-    "10.벨의 부등식.png",
-    "11. 세넌 엔트로피.png",
-    "12.표준 모형 라그랑지안.png",
-    "13.푸앵카레 추측.png",
-    "14.나비에-스토크스 방정식.png",
-    "15.RSA 암호 알고리즘.png",
-    "16.가우스-보네 정리.png",
-    "16.뉴턴의 만유인력 법칙.png",
-    "17.오일러의 다면체 정리.png",
-    "18.블랙-숄즈_공식.png",
-    "19.페이지랭크_알고리즘.png",
-    "20.심플렉스_알고리즘.png",
-    "21.아르키메데스의_원리.png",
-    "22.캐플러의 법칙.png",
-    "23.옴의 법칙.png",
-    "24.쿨롱의_법칙.png",
-    "25.훅의_법칙.png",
-    "26.피타고라스 정리.png",
-    "27.스넬의_법칙.png",
-    "28.도플러 효과 공식.png",
-    "29.내시 균형.png",
-];
-const KOREAN_CARD_NAME_TO_ID = {
-    "나비에스토크스방정식": "navier_stokes",
-    "벨의부등식": "bell_inequality",
-    "섀넌엔트로피": "shannon_entropy",
-    "오일러라그랑주": "euler_lagrange",
-    "질량에너지": "mass_energy",
-};
 const DETAIL_COPY = {
     euler_identity: {
         origin:
@@ -101,284 +63,434 @@ const DETAIL_COPY = {
     },
 };
 
-const STORAGE_KEY = "formula-relics-tcg-inventory-v5";
+const STORAGE_KEY = "formula-relics-tcg-inventory-v6";
 const CATALOG_ORDER_KEY = "formula-relics-tcg-catalog-order-v1";
 let memoryInventoryStore = null;
 
 const FORMULA_LIBRARY = [
     {
-        id: "euler_identity",
-        name: "Euler's Identity",
-        latex: "e^{i\\pi} + 1 = 0",
-        discoverer: "Leonhard Euler",
-        year: 1748,
-        metrics: { authority: 100, influence: 100, history: 99, value: 100 },
+        "id": "euler_identity",
+        "art": "2.오일러 항등식.png",
+        "name": "오일러 항등식",
+        "discoverer": "레온하르트 오일러",
+        "year": 1748,
+        "note": "『무한 해석 입문』에서 오일러 공식과 함께 정리",
+        "metrics": {
+            "authority": 100,
+            "influence": 100,
+            "history": 100,
+            "value": 80
+        },
+        "latex": "오일러 항등식"
     },
     {
-        id: "pythagorean_theorem",
-        name: "Pythagorean Theorem",
-        latex: "a^2 + b^2 = c^2",
-        discoverer: "Pythagoras",
-        year: -530,
-        metrics: { authority: 99, influence: 98, history: 98, value: 94 },
+        "id": "euler_lagrange",
+        "art": "3.오일러-라그랑주 방정식.png",
+        "name": "오일러-라그랑주 방정식",
+        "discoverer": "오일러·라그랑주",
+        "year": 1755,
+        "note": "19세 라그랑주가 오일러에게 보낸 편지로 변분법 완성",
+        "metrics": {
+            "authority": 100,
+            "influence": 100,
+            "history": 100,
+            "value": 100
+        },
+        "latex": "오일러-라그랑주 방정식"
     },
     {
-        id: "quadratic_formula",
-        name: "Quadratic Formula",
-        latex: "x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}",
-        discoverer: "Brahmagupta",
-        year: 628,
-        metrics: { authority: 97, influence: 89, history: 88, value: 82 },
+        "id": "mass_energy",
+        "art": "4.질량-애너지 보존의 원리.png",
+        "name": "질량-에너지 등가 원리",
+        "discoverer": "알베르트 아인슈타인",
+        "year": 1905,
+        "note": "'기적의 해'에 낸 특수상대성이론 후속 논문",
+        "metrics": {
+            "authority": 100,
+            "influence": 100,
+            "history": 100,
+            "value": 100
+        },
+        "latex": "질량-에너지 등가 원리"
     },
     {
-        id: "fundamental_theorem_calculus",
-        name: "Fundamental Theorem of Calculus",
-        latex: "\\int_a^b f'(x)\\,dx = f(b) - f(a)",
-        discoverer: "Isaac Newton & Gottfried Leibniz",
-        year: 1668,
-        metrics: { authority: 98, influence: 97, history: 95, value: 84 },
+        "id": "dirac_equation",
+        "art": "5.디렉 방정식.png",
+        "name": "디랙 방정식",
+        "discoverer": "폴 디랙",
+        "year": 1928,
+        "note": "상대론적 전자 방정식, 반물질을 예언",
+        "metrics": {
+            "authority": 100,
+            "influence": 100,
+            "history": 90,
+            "value": 90
+        },
+        "latex": "디랙 방정식"
     },
     {
-        id: "newton_second_law",
-        name: "Newton's Second Law",
-        latex: "F = ma",
-        discoverer: "Isaac Newton",
-        year: 1687,
-        metrics: { authority: 95, influence: 99, history: 92, value: 90 },
+        "id": "maxwell_equations",
+        "art": "6.멕스웰 방정식.png",
+        "name": "맥스웰 방정식",
+        "discoverer": "제임스 클러크 맥스웰",
+        "year": 1865,
+        "note": "「전자기장의 동역학 이론」, 빛은 전자기파",
+        "metrics": {
+            "authority": 100,
+            "influence": 100,
+            "history": 90,
+            "value": 90
+        },
+        "latex": "맥스웰 방정식"
     },
     {
-        id: "mass_energy",
-        name: "Mass-Energy Equivalence",
-        latex: "E = mc^2",
-        discoverer: "Albert Einstein",
-        year: 1905,
-        metrics: { authority: 98, influence: 99, history: 96, value: 91 },
+        "id": "central_limit_theorem",
+        "art": "7.중심 극한 정리.png",
+        "name": "중심 극한 정리",
+        "discoverer": "피에르시몽 라플라스",
+        "year": 1810,
+        "note": "드무아브르(1733)의 발견을 라플라스가 일반화",
+        "metrics": {
+            "authority": 100,
+            "influence": 100,
+            "history": 100,
+            "value": 70
+        },
+        "latex": "중심 극한 정리"
     },
     {
-        id: "bayes_theorem",
-        name: "Bayes' Theorem",
-        latex: "P(A|B) = \\frac{P(B|A)P(A)}{P(B)}",
-        discoverer: "Thomas Bayes",
-        year: 1763,
-        metrics: { authority: 96, influence: 97, history: 87, value: 86 },
+        "id": "fundamental_theorem_calculus",
+        "art": "8.미적분학의 기본 정리.png",
+        "name": "미적분학의 기본 정리",
+        "discoverer": "뉴턴·라이프니츠",
+        "year": 1670,
+        "note": "배로의 『기하학 강의』에 등장, 뉴턴·라이프니츠가 체계화",
+        "metrics": {
+            "authority": 100,
+            "influence": 100,
+            "history": 100,
+            "value": 90
+        },
+        "latex": "미적분학의 기본 정리"
     },
     {
-        id: "gaussian_integral",
-        name: "Gaussian Integral",
-        latex: "\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}",
-        discoverer: "Carl Friedrich Gauss",
-        year: 1809,
-        metrics: { authority: 95, influence: 86, history: 82, value: 95 },
+        "id": "bell_inequality",
+        "art": "10.벨의 부등식.png",
+        "name": "벨의 부등식",
+        "discoverer": "존 스튜어트 벨",
+        "year": 1964,
+        "note": "양자 얽힘을 실험으로 검증할 길을 염",
+        "metrics": {
+            "authority": 100,
+            "influence": 100,
+            "history": 80,
+            "value": 70
+        },
+        "latex": "벨의 부등식"
     },
     {
-        id: "shannon_entropy",
-        name: "Shannon Entropy",
-        latex: "H(X) = -\\sum p(x)\\log p(x)",
-        discoverer: "Claude Shannon",
-        year: 1948,
-        metrics: { authority: 95, influence: 96, history: 86, value: 84 },
+        "id": "shannon_entropy",
+        "art": "11. 세넌 엔트로피.png",
+        "name": "섀넌 엔트로피",
+        "discoverer": "클로드 섀넌",
+        "year": 1948,
+        "note": "「통신의 수학적 이론」, 정보 이론의 탄생",
+        "metrics": {
+            "authority": 100,
+            "influence": 100,
+            "history": 80,
+            "value": 80
+        },
+        "latex": "섀넌 엔트로피"
     },
     {
-        id: "bell_inequality",
-        name: "Bell's Inequality",
-        latex: "|E(a,b) - E(a,b') + E(a',b) + E(a',b')| \\le 2",
-        discoverer: "John Stewart Bell",
-        year: 1964,
-        metrics: { authority: 94, influence: 92, history: 84, value: 78 },
+        "id": "standard_model",
+        "art": "12.표준 모형 라그랑지안.png",
+        "name": "표준 모형 라그랑지안",
+        "discoverer": "글래쇼·와인버그·살람 외",
+        "year": 1973,
+        "note": "전약 이론에 양자색역학이 더해져 완성",
+        "metrics": {
+            "authority": 100,
+            "influence": 100,
+            "history": 80,
+            "value": 80
+        },
+        "latex": "표준 모형 라그랑지안"
     },
     {
-        id: "navier_stokes",
-        name: "Navier-Stokes Equation",
-        latex: "\\rho\\left(\\frac{\\partial u}{\\partial t} + u\\cdot\\nabla u\\right) = -\\nabla p + \\mu\\nabla^2u + f",
-        discoverer: "Claude-Louis Navier & George Stokes",
-        year: 1845,
-        metrics: { authority: 90, influence: 94, history: 88, value: 62 },
+        "id": "poincare_conjecture",
+        "art": "13.푸앵카레 추측.png",
+        "name": "푸앵카레 추측",
+        "discoverer": "앙리 푸앵카레",
+        "year": 1904,
+        "note": "1904년 제기, 2003년 페렐만이 리치 흐름으로 증명",
+        "metrics": {
+            "authority": 100,
+            "influence": 100,
+            "history": 80,
+            "value": 80
+        },
+        "latex": "푸앵카레 추측"
     },
     {
-        id: "black_scholes",
-        name: "Black-Scholes Equation",
-        latex: "\\frac{\\partial V}{\\partial t} + \\frac{1}{2}\\sigma^2S^2\\frac{\\partial^2V}{\\partial S^2} + rS\\frac{\\partial V}{\\partial S} - rV = 0",
-        discoverer: "Black, Scholes & Merton",
-        year: 1973,
-        metrics: { authority: 87, influence: 91, history: 80, value: 64 },
+        "id": "navier_stokes",
+        "art": "14.나비에-스토크스 방정식.png",
+        "name": "나비에-스토크스 방정식",
+        "discoverer": "나비에·스토크스",
+        "year": 1845,
+        "note": "나비에(1822)의 식을 스토크스가 완성",
+        "metrics": {
+            "authority": 100,
+            "influence": 100,
+            "history": 90,
+            "value": 70
+        },
+        "latex": "나비에-스토크스 방정식"
     },
     {
-        id: "riemann_zeta",
-        name: "Riemann Zeta Functional Equation",
-        latex: "\\zeta(s) = 2^s\\pi^{s-1}\\sin\\left(\\frac{\\pi s}{2}\\right)\\Gamma(1-s)\\zeta(1-s)",
-        discoverer: "Bernhard Riemann",
-        year: 1859,
-        metrics: { authority: 93, influence: 85, history: 91, value: 79 },
+        "id": "rsa",
+        "art": "15.RSA 암호 알고리즘.png",
+        "name": "RSA 암호 알고리즘",
+        "discoverer": "리베스트·샤미르·애들먼",
+        "year": 1977,
+        "note": "공개키 암호를 실용화한 MIT 세 연구자",
+        "metrics": {
+            "authority": 80,
+            "influence": 100,
+            "history": 80,
+            "value": 70
+        },
+        "latex": "RSA 암호 알고리즘"
     },
     {
-        id: "euclid_primes",
-        name: "Euclid's Prime Infinitude",
-        latex: "\\text{There are infinitely many primes.}",
-        discoverer: "Euclid",
-        year: -300,
-        metrics: { authority: 97, influence: 84, history: 97, value: 92 },
+        "id": "gauss_bonnet",
+        "art": "16.가우스-보네 정리.png",
+        "name": "가우스-보네 정리",
+        "discoverer": "가우스·보네",
+        "year": 1848,
+        "note": "가우스의 연구를 보네가 일반 곡면으로 확장",
+        "metrics": {
+            "authority": 100,
+            "influence": 60,
+            "history": 90,
+            "value": 60
+        },
+        "latex": "가우스-보네 정리"
     },
     {
-        id: "de_moivre",
-        name: "De Moivre's Formula",
-        latex: "(\\cos x + i\\sin x)^n = \\cos(nx) + i\\sin(nx)",
-        discoverer: "Abraham de Moivre",
-        year: 1730,
-        metrics: { authority: 92, influence: 81, history: 78, value: 90 },
+        "id": "newton_gravitation",
+        "art": "16.뉴턴의 만유인력 법칙.png",
+        "name": "뉴턴의 만유인력 법칙",
+        "discoverer": "아이작 뉴턴",
+        "year": 1687,
+        "note": "『프린키피아』에서 발표",
+        "metrics": {
+            "authority": 80,
+            "influence": 70,
+            "history": 60,
+            "value": 70
+        },
+        "latex": "뉴턴의 만유인력 법칙"
     },
     {
-        id: "binomial_theorem",
-        name: "Binomial Theorem",
-        latex: "(x+y)^n = \\sum_{k=0}^{n}\\binom{n}{k}x^{n-k}y^k",
-        discoverer: "Isaac Newton",
-        year: 1665,
-        metrics: { authority: 95, influence: 88, history: 83, value: 86 },
+        "id": "euler_polyhedron",
+        "art": "17.오일러의 다면체 정리.png",
+        "name": "오일러의 다면체 정리",
+        "discoverer": "레온하르트 오일러",
+        "year": 1752,
+        "note": "V−E+F=2, 위상수학의 출발점",
+        "metrics": {
+            "authority": 80,
+            "influence": 70,
+            "history": 80,
+            "value": 60
+        },
+        "latex": "오일러의 다면체 정리"
     },
     {
-        id: "green_theorem",
-        name: "Green's Theorem",
-        latex: "\\oint_C (L\\,dx + M\\,dy) = \\iint_D \\left(\\frac{\\partial M}{\\partial x} - \\frac{\\partial L}{\\partial y}\\right)dA",
-        discoverer: "George Green",
-        year: 1828,
-        metrics: { authority: 92, influence: 83, history: 80, value: 74 },
+        "id": "black_scholes",
+        "art": "18.블랙-숄즈_공식.png",
+        "name": "블랙-숄즈 공식",
+        "discoverer": "블랙·숄즈·머턴",
+        "year": 1973,
+        "note": "옵션 가격 모형, 1997년 노벨 경제학상",
+        "metrics": {
+            "authority": 80,
+            "influence": 100,
+            "history": 80,
+            "value": 80
+        },
+        "latex": "블랙-숄즈 공식"
     },
     {
-        id: "heron_formula",
-        name: "Heron's Formula",
-        latex: "A = \\sqrt{s(s-a)(s-b)(s-c)}",
-        discoverer: "Heron of Alexandria",
-        year: 60,
-        metrics: { authority: 91, influence: 72, history: 86, value: 90 },
+        "id": "pagerank",
+        "art": "19.페이지랭크_알고리즘.png",
+        "name": "페이지랭크 알고리즘",
+        "discoverer": "브린·페이지",
+        "year": 1998,
+        "note": "구글 검색의 출발이 된 스탠퍼드 논문",
+        "metrics": {
+            "authority": 70,
+            "influence": 100,
+            "history": 90,
+            "value": 80
+        },
+        "latex": "페이지랭크 알고리즘"
     },
     {
-        id: "law_of_cosines",
-        name: "Law of Cosines",
-        latex: "c^2 = a^2 + b^2 - 2ab\\cos C",
-        discoverer: "Al-Kashi",
-        year: 1427,
-        metrics: { authority: 93, influence: 75, history: 73, value: 82 },
+        "id": "simplex",
+        "art": "20.심플렉스_알고리즘.png",
+        "name": "심플렉스 알고리즘",
+        "discoverer": "조지 댄치그",
+        "year": 1947,
+        "note": "미 공군 보급 계획에서 태어난 선형계획법",
+        "metrics": {
+            "authority": 100,
+            "influence": 60,
+            "history": 70,
+            "value": 60
+        },
+        "latex": "심플렉스 알고리즘"
     },
     {
-        id: "ceva_theorem",
-        name: "Ceva's Theorem",
-        latex: "\\frac{AF}{FB}\\cdot\\frac{BD}{DC}\\cdot\\frac{CE}{EA} = 1",
-        discoverer: "Giovanni Ceva",
-        year: 1678,
-        metrics: { authority: 86, influence: 63, history: 68, value: 78 },
+        "id": "archimedes_principle",
+        "art": "21.아르키메데스의_원리.png",
+        "name": "아르키메데스의 원리",
+        "discoverer": "아르키메데스",
+        "year": -250,
+        "note": "『부체에 대하여』, \"유레카\"의 전설",
+        "metrics": {
+            "authority": 70,
+            "influence": 70,
+            "history": 60,
+            "value": 90
+        },
+        "latex": "아르키메데스의 원리"
     },
     {
-        id: "pick_theorem",
-        name: "Pick's Theorem",
-        latex: "A = I + \\frac{B}{2} - 1",
-        discoverer: "Georg Pick",
-        year: 1899,
-        metrics: { authority: 84, influence: 58, history: 64, value: 88 },
+        "id": "kepler_laws",
+        "art": "22.캐플러의 법칙.png",
+        "name": "케플러의 법칙",
+        "discoverer": "요하네스 케플러",
+        "year": 1609,
+        "note": "『신천문학』에서 타원 궤도 발표(제3법칙은 1619)",
+        "metrics": {
+            "authority": 90,
+            "influence": 70,
+            "history": 70,
+            "value": 70
+        },
+        "latex": "케플러의 법칙"
     },
     {
-        id: "inclusion_exclusion",
-        name: "Inclusion-Exclusion Principle",
-        latex: "|A \\cup B| = |A| + |B| - |A \\cap B|",
-        discoverer: "Abraham de Moivre",
-        year: 1718,
-        metrics: { authority: 89, influence: 74, history: 70, value: 76 },
+        "id": "ohm_law",
+        "art": "23.옴의 법칙.png",
+        "name": "옴의 법칙",
+        "discoverer": "게오르크 옴",
+        "year": 1827,
+        "note": "『수학적으로 다룬 갈바니 회로』",
+        "metrics": {
+            "authority": 70,
+            "influence": 60,
+            "history": 60,
+            "value": 70
+        },
+        "latex": "옴의 법칙"
     },
     {
-        id: "eulers_formula",
-        name: "Euler's Formula",
-        latex: "e^{ix} = \\cos x + i\\sin x",
-        discoverer: "Leonhard Euler",
-        year: 1748,
-        metrics: { authority: 97, influence: 95, history: 91, value: 93 },
+        "id": "coulomb_law",
+        "art": "24.쿨롱의_법칙.png",
+        "name": "쿨롱의 법칙",
+        "discoverer": "샤를오귀스탱 드 쿨롱",
+        "year": 1785,
+        "note": "비틀림 저울로 전기력을 측정",
+        "metrics": {
+            "authority": 60,
+            "influence": 60,
+            "history": 60,
+            "value": 60
+        },
+        "latex": "쿨롱의 법칙"
     },
     {
-        id: "cauchy_schwarz",
-        name: "Cauchy-Schwarz Inequality",
-        latex: "|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|",
-        discoverer: "Cauchy & Schwarz",
-        year: 1821,
-        metrics: { authority: 93, influence: 89, history: 82, value: 77 },
+        "id": "hooke_law",
+        "art": "25.훅의_법칙.png",
+        "name": "훅의 법칙",
+        "discoverer": "로버트 훅",
+        "year": 1678,
+        "note": "『복원력에 대하여』에서 발표",
+        "metrics": {
+            "authority": 60,
+            "influence": 60,
+            "history": 60,
+            "value": 70
+        },
+        "latex": "훅의 법칙"
     },
     {
-        id: "stokes_theorem",
-        name: "Stokes' Theorem",
-        latex: "\\int_S (\\nabla \\times F)\\cdot dS = \\oint_{\\partial S} F\\cdot dr",
-        discoverer: "George Stokes",
-        year: 1854,
-        metrics: { authority: 94, influence: 87, history: 81, value: 76 },
+        "id": "pythagorean_theorem",
+        "art": "26.피타고라스 정리.png",
+        "name": "피타고라스 정리",
+        "discoverer": "피타고라스 학파",
+        "year": -530,
+        "note": "고대 그리스 피타고라스 학파의 전승",
+        "metrics": {
+            "authority": 100,
+            "influence": 100,
+            "history": 100,
+            "value": 90
+        },
+        "latex": "피타고라스 정리"
     },
     {
-        id: "maxwell_equations",
-        name: "Maxwell's Equations",
-        latex: "\\nabla\\cdot E=\\rho/\\epsilon_0,\\; \\nabla\\cdot B=0",
-        discoverer: "James Clerk Maxwell",
-        year: 1865,
-        metrics: { authority: 96, influence: 99, history: 90, value: 88 },
+        "id": "snell_law",
+        "art": "27.스넬의_법칙.png",
+        "name": "스넬의 법칙",
+        "discoverer": "빌레브로르트 스넬",
+        "year": 1621,
+        "note": "굴절 법칙(984년 이븐 사흘도 발견)",
+        "metrics": {
+            "authority": 60,
+            "influence": 50,
+            "history": 60,
+            "value": 60
+        },
+        "latex": "스넬의 법칙"
     },
     {
-        id: "wave_equation",
-        name: "Wave Equation",
-        latex: "\\frac{\\partial^2 u}{\\partial t^2}=c^2\\nabla^2 u",
-        discoverer: "Jean le Rond d'Alembert",
-        year: 1747,
-        metrics: { authority: 91, influence: 90, history: 79, value: 72 },
+        "id": "doppler_effect",
+        "art": "28.도플러 효과 공식.png",
+        "name": "도플러 효과",
+        "discoverer": "크리스티안 도플러",
+        "year": 1842,
+        "note": "쌍성의 색 변화를 설명하며 발표",
+        "metrics": {
+            "authority": 50,
+            "influence": 50,
+            "history": 60,
+            "value": 60
+        },
+        "latex": "도플러 효과"
     },
     {
-        id: "heat_equation",
-        name: "Heat Equation",
-        latex: "\\frac{\\partial u}{\\partial t}=\\alpha \\nabla^2 u",
-        discoverer: "Joseph Fourier",
-        year: 1822,
-        metrics: { authority: 92, influence: 92, history: 83, value: 73 },
-    },
-    {
-        id: "taylor_series",
-        name: "Taylor Series",
-        latex: "f(x)=\\sum_{n=0}^{\\infty}\\frac{f^{(n)}(a)}{n!}(x-a)^n",
-        discoverer: "Brook Taylor",
-        year: 1715,
-        metrics: { authority: 94, influence: 91, history: 84, value: 81 },
-    },
-    {
-        id: "lagrange_multiplier",
-        name: "Lagrange Multipliers",
-        latex: "\\nabla f = \\lambda \\nabla g",
-        discoverer: "Joseph-Louis Lagrange",
-        year: 1788,
-        metrics: { authority: 90, influence: 86, history: 77, value: 74 },
-    },
-    {
-        id: "euler_lagrange",
-        name: "Euler-Lagrange Equation",
-        latex: "\\frac{d}{dt}\\frac{\\partial L}{\\partial \\dot{q}} - \\frac{\\partial L}{\\partial q} = 0",
-        discoverer: "Leonhard Euler & Joseph-Louis Lagrange",
-        year: 1755,
-        metrics: { authority: 93, influence: 90, history: 88, value: 86 },
-    },
-    {
-        id: "gauss_divergence",
-        name: "Gauss Divergence Theorem",
-        latex: "\\iiint_V \\nabla\\cdot F\\,dV = \\iint_{\\partial V} F\\cdot n\\,dS",
-        discoverer: "Carl Friedrich Gauss",
-        year: 1813,
-        metrics: { authority: 93, influence: 88, history: 82, value: 75 },
-    },
-    {
-        id: "central_limit_theorem",
-        name: "Central Limit Theorem",
-        latex: "\\frac{\\bar X-\\mu}{\\sigma/\\sqrt n} \\to N(0,1)",
-        discoverer: "Laplace & Lyapunov",
-        year: 1810,
-        metrics: { authority: 95, influence: 96, history: 85, value: 83 },
-    },
+        "id": "nash_equilibrium",
+        "art": "29.내시 균형.png",
+        "name": "내시 균형",
+        "discoverer": "존 내시",
+        "year": 1950,
+        "note": "21세 대학원생의 한 쪽짜리 논문, 1994년 노벨상",
+        "metrics": {
+            "authority": 90,
+            "influence": 80,
+            "history": 80,
+            "value": 70
+        },
+        "latex": "내시 균형"
+    }
 ];
 
-const STARTER_IDS = [
-    "shannon_entropy",
-    "navier_stokes",
-    "bell_inequality",
-    "euler_lagrange",
-    "mass_energy",
-];
+const STARTER_IDS = ["shannon_entropy", "poincare_conjecture", "standard_model", "central_limit_theorem", "kepler_laws"];
 
 const library = FORMULA_LIBRARY.map(enrichFormula);
 const formulaById = Object.fromEntries(library.map((card) => [card.id, card]));
@@ -426,10 +538,10 @@ function enrichFormula(formula) {
         rarity,
         totalScore: METRIC_KEYS.reduce((sum, key) => sum + formula.metrics[key], 0),
         flavor: FLAVOR_BY_RARITY[rarity],
-        artwork: DEFAULT_CARD_ART,
+        artwork: formula.art,
         backArtwork: DEFAULT_CARD_BACK,
-        detail: DETAIL_COPY[formula.id] || {
-            origin: `${formula.name}은 ${formula.discoverer}와 연결된 공식으로, 이후의 이론과 응용 속에서 반복적으로 등장하며 수학의 고전으로 자리 잡았습니다.`,
+        detail: {
+            origin: formula.note,
             core: `이 카드에서는 ${formula.latex}를 통해 ${formula.name}의 핵심 구조를 보여줍니다. 식의 형태보다 그 안에 담긴 아이디어가 중심입니다.`,
             significance: `서로 다른 개념을 연결하고, 증명을 단순화하거나, 실제 문제 해결에 직접 쓰인다는 점에서 높은 가치를 지닙니다.`,
         },
@@ -449,105 +561,15 @@ function imageExists(path) {
     });
 }
 
-function normalizeImageMatchKey(value) {
-    return value
-        .replace(/\.[^.]+$/, "")
-        .normalize("NFC")
-        .toLowerCase()
-        .replace(/[^a-z0-9가-힣]+/g, "");
-}
-
-function getFormulaMatchKeys(formula) {
-    return new Set([
-        normalizeImageMatchKey(formula.id),
-        normalizeImageMatchKey(formula.name),
-        normalizeImageMatchKey(formula.name.replace(/equation|theorem|formula|inequality|principle/gi, "")),
-    ]);
-}
-
-async function fetchGithubPngImages() {
-    try {
-        const response = await fetch(`${GITHUB_CONTENTS_API}&v=${Date.now()}`);
-        if (!response.ok) return [];
-        const files = await response.json();
-        if (!Array.isArray(files)) return [];
-        return files
-            .filter((file) => file.type === "file" && /\.png$/i.test(file.name) && file.download_url)
-            .map((file) => ({
-                name: file.name,
-                key: normalizeImageMatchKey(file.name),
-                url: file.download_url,
-            }))
-            .sort((a, b) => a.name.localeCompare(b.name));
-    } catch {
-        return [];
-    }
-}
-
-function isPackImage(image) {
-    return image.key.includes("pack");
-}
-
-function isBackImage(image) {
-    return image.key.includes(DEFAULT_CARD_BACK_KEYWORD);
-}
-
-function applyPackArtwork(images) {
-    const packImage = images.find(isPackImage);
-    const packArt = packImage?.url || DEFAULT_PACK_ART;
-    document.documentElement.style.setProperty("--pack-art", packArt ? `url("${escapeAssetPath(packArt)}")` : "none");
-}
-
-async function applyCustomCardDesigns() {
-    const githubImages = await fetchGithubPngImages();
-    applyPackArtwork(githubImages);
-
-    const backImage = githubImages.find(isBackImage);
-    const cardBackArtwork = backImage?.url || DEFAULT_CARD_BACK;
-    const cardImages = githubImages.filter((image) => !isPackImage(image) && !isBackImage(image));
-    const unusedImages = new Map(cardImages.map((image) => [image.url, image]));
-
-    library.forEach((formula) => {
-        formula.backArtwork = cardBackArtwork;
-        const formulaKeys = getFormulaMatchKeys(formula);
-        const matchedImage = cardImages.find((image) => {
-            const mappedId = KOREAN_CARD_NAME_TO_ID[image.key];
-            return mappedId === formula.id || formulaKeys.has(image.key);
-        });
-        if (!matchedImage) return;
-        formula.artwork = matchedImage.url;
-        unusedImages.delete(matchedImage.url);
-    });
-
-    const fallbackImages = [...unusedImages.values()];
-    library
-        .filter((formula) => !formula.artwork)
-        .forEach((formula, index) => {
-            const image = fallbackImages[index];
-            if (!image) return;
-            formula.artwork = image.url;
-            formula.backArtwork = cardBackArtwork;
-        });
-
-    if (!cardImages.length) {
-        library.forEach((formula) => {
-            formula.backArtwork = cardBackArtwork;
-        });
-        return;
-    }
-
-    library.forEach((formula) => {
-        if (!formula.backArtwork) {
-            formula.backArtwork = cardBackArtwork;
-        }
-    });
+function applyPackArtwork() {
+    document.documentElement.style.setProperty("--pack-art", `url("${escapeAssetPath(DEFAULT_PACK_ART)}")`);
 }
 
 function safeStorageGet(key) {
     try {
         return window.localStorage.getItem(key);
     } catch {
-        return memoryInventoryStore;
+        return key === STORAGE_KEY ? memoryInventoryStore : null;
     }
 }
 
@@ -573,7 +595,7 @@ function safeStorageRemove(key) {
 
 function ensureStarterInventory(entries) {
     const starterIds = new Set(STARTER_IDS);
-    const next = entries.filter((entry) => entry.source !== "starter" || starterIds.has(entry.formulaId));
+    const next = [...entries];
     const existingIds = new Set(next.map((entry) => entry.formulaId));
     let timestamp = Date.now();
 
@@ -589,12 +611,18 @@ function ensureStarterInventory(entries) {
     return next;
 }
 
+const INVENTORY_V5_IDS = {"euler_identity": "euler_identity", "pythagorean_theorem": "euler_lagrange", "quadratic_formula": "mass_energy", "fundamental_theorem_calculus": "dirac_equation", "newton_second_law": "maxwell_equations", "mass_energy": "central_limit_theorem", "bayes_theorem": "fundamental_theorem_calculus", "gaussian_integral": "bell_inequality", "shannon_entropy": "shannon_entropy", "bell_inequality": "standard_model", "navier_stokes": "poincare_conjecture", "black_scholes": "navier_stokes", "riemann_zeta": "rsa", "euclid_primes": "gauss_bonnet", "de_moivre": "newton_gravitation", "binomial_theorem": "euler_polyhedron", "green_theorem": "black_scholes", "heron_formula": "pagerank", "law_of_cosines": "simplex", "ceva_theorem": "archimedes_principle", "pick_theorem": "kepler_laws", "inclusion_exclusion": "ohm_law", "eulers_formula": "coulomb_law", "cauchy_schwarz": "hooke_law", "stokes_theorem": "pythagorean_theorem", "maxwell_equations": "snell_law", "wave_equation": "doppler_effect", "heat_equation": "nash_equilibrium", "taylor_series": "bell_inequality", "lagrange_multiplier": "shannon_entropy", "euler_lagrange": "standard_model", "gauss_divergence": "poincare_conjecture", "central_limit_theorem": "navier_stokes"};
+
 function loadInventory() {
-    const raw = safeStorageGet(STORAGE_KEY);
+    const current = safeStorageGet(STORAGE_KEY);
+    const raw = current || safeStorageGet("formula-relics-tcg-inventory-v5");
     if (raw) {
         try {
             const parsed = JSON.parse(raw);
-            const normalized = ensureStarterInventory(Array.isArray(parsed) ? parsed : []);
+            const entries = (Array.isArray(parsed) ? parsed : []).map(entry => current ? entry : {
+                ...entry, formulaId: INVENTORY_V5_IDS[entry.formulaId] || entry.formulaId
+            }).filter(entry => formulaById[entry.formulaId]);
+            const normalized = ensureStarterInventory(entries);
             safeStorageSet(STORAGE_KEY, JSON.stringify(normalized));
             return normalized;
         } catch {
@@ -1169,32 +1197,6 @@ function showPage(pageName) {
     });
 
     window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
-}
-
-function applyBundledCardArtwork() {
-    const images = BUNDLED_CARD_ARTWORK.map((name) => ({
-        name,
-        key: normalizeImageMatchKey(name),
-        url: name,
-    }));
-    const unusedImages = new Map(images.map((image) => [image.url, image]));
-
-    library.forEach((formula) => {
-        formula.backArtwork = DEFAULT_CARD_BACK;
-        const formulaKeys = getFormulaMatchKeys(formula);
-        const matchedImage = images.find((image) => {
-            const mappedId = KOREAN_CARD_NAME_TO_ID[image.key];
-            return mappedId === formula.id || formulaKeys.has(image.key);
-        });
-        if (!matchedImage) return;
-        formula.artwork = matchedImage.url;
-        unusedImages.delete(matchedImage.url);
-    });
-
-    const fallbackImages = [...unusedImages.values()];
-    library.filter((formula) => !formula.artwork).forEach((formula, index) => {
-        if (fallbackImages[index]) formula.artwork = fallbackImages[index].url;
-    });
 }
 
 function renderInventory() {
@@ -1826,7 +1828,7 @@ function init() {
     // Render immediately from bundled assets. Remote artwork discovery must
     // never block pack interaction or the collected-card catalog.
     applyPackArtwork([]);
-    applyBundledCardArtwork();
+
     showPage("opening");
     renderCatalog();
     renderInventory();
@@ -1834,12 +1836,7 @@ function init() {
     bindEvents();
     prepareNewPack();
 
-    applyCustomCardDesigns().then(() => {
-        renderCatalog();
-        renderInventory();
-    }).catch((error) => {
-        console.warn("Using bundled card artwork because remote artwork discovery failed", error);
-    });
+
 }
 
 document.addEventListener("DOMContentLoaded", init);
