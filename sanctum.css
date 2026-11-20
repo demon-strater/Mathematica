@@ -146,9 +146,13 @@ p.section-eyebrow { margin: 0 0 5px; }
 .hand-control-button.is-active { background: linear-gradient(135deg, #243c3ce6, #18272fe6); border-color: #8bd9c37d; box-shadow: 0 0 20px #70ffcc14; }
 .hand-control-button.is-active svg { color: #a6ddcc; }
 .hand-control-button[aria-busy="true"] .hand-control-dot { background: transparent; width: 10px; height: 10px; border: 1px solid #d9c5f63b; border-top-color: #d9c5f6; animation: orbitTurn 1s linear infinite; }
-.hand-status { display: block !important; right: max(24px, env(safe-area-inset-right)); bottom: calc(max(20px, env(safe-area-inset-bottom)) + 199px); padding: 14px 18px; border: 1px solid var(--etching); line-height: 1.8; background: #171322f5; }
+.hand-status { display: block !important; right: max(24px, env(safe-area-inset-right)); bottom: calc(max(20px, env(safe-area-inset-bottom)) + 334px); padding: 14px 18px; border: 1px solid var(--etching); line-height: 1.8; background: #171322f5; }
 .hand-status:not(.is-visible) { visibility: hidden; }
-.hand-camera { right: max(24px, env(safe-area-inset-right)); bottom: calc(max(20px, env(safe-area-inset-bottom)) + 52px); border-radius: 12px; }
+/* Camera preview at twice the original 180px width (4:3), so the hand is easy to see. */
+.hand-camera { width: min(360px, calc(100vw - 48px)); right: max(24px, env(safe-area-inset-right)); bottom: calc(max(20px, env(safe-area-inset-bottom)) + 52px); border-radius: 12px; }
+.hand-camera .hand-fingers { top: 10px; gap: 5px; }
+.hand-camera .hand-fingers span { padding: 3px 7px; font-size: 11px; }
+.hand-camera .hand-gesture { bottom: 10px; padding: 4px 12px; font-size: 13px; }
 
 /* The same engraved visual language carries through the collection and story. */
 .collection-progress { display: flex; align-items: center; gap: 20px; padding: 24px 0; font-size: 10px; color: #bcacd0; }
