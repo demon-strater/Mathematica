@@ -313,3 +313,16 @@ p.section-eyebrow { margin: 0 0 5px; }
         --rot: calc(var(--fan-position, 0) * 8deg);
     }
 }
+
+/* Full-screen desktops (Full HD and larger): lift the 1440×900 caps so the header spans the
+   screen and the stage, orbit, pack and dealt cards grow with the height instead of leaving
+   an empty band below the Open button. Stage height = viewport minus header and controls. */
+@media (min-width: 1600px) and (min-height: 900px) {
+    .app-shell { width: min(2400px, calc(100% - 8vw)); }
+    .card-stage { height: calc(100svh - 263px); }
+    .celestial-orbit { width: min(48vw, calc((100svh - 263px) * .9)); }
+    .booster-pack { width: min(28vw, calc((100svh - 263px) * .47)); }
+    .spread-fan .spread-card { --fan-card-width: clamp(130px, min(19cqw, (100cqh - 40px) / 2), 380px); }
+    .catalog-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .about-layout { min-height: calc(100svh - 270px); }
+}
