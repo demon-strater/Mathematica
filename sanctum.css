@@ -146,13 +146,16 @@ p.section-eyebrow { margin: 0 0 5px; }
 .hand-control-button.is-active { background: linear-gradient(135deg, #243c3ce6, #18272fe6); border-color: #8bd9c37d; box-shadow: 0 0 20px #70ffcc14; }
 .hand-control-button.is-active svg { color: #a6ddcc; }
 .hand-control-button[aria-busy="true"] .hand-control-dot { background: transparent; width: 10px; height: 10px; border: 1px solid #d9c5f63b; border-top-color: #d9c5f6; animation: orbitTurn 1s linear infinite; }
-.hand-status { display: block !important; right: max(24px, env(safe-area-inset-right)); bottom: calc(max(20px, env(safe-area-inset-bottom)) + 334px); padding: 14px 18px; border: 1px solid var(--etching); line-height: 1.8; background: #171322f5; }
+.hand-status { display: block !important; right: max(24px, env(safe-area-inset-right)); bottom: calc(max(20px, env(safe-area-inset-bottom)) + 272px); padding: 14px 18px; border: 1px solid var(--etching); line-height: 1.8; background: #171322f5; }
 .hand-status:not(.is-visible) { visibility: hidden; }
-/* Camera preview at twice the original 180px width (4:3), so the hand is easy to see. */
-.hand-camera { width: min(360px, calc(100vw - 48px)); right: max(24px, env(safe-area-inset-right)); bottom: calc(max(20px, env(safe-area-inset-bottom)) + 52px); border-radius: 12px; }
+/* Camera preview at twice the original 180px width (4:3), so the hand is easy to see.
+   It reaches 10px past the Hand button on the right and bottom, so the button (command bar,
+   one layer up) sits over the preview's corner and stays where it was when the camera is off. */
+.hand-camera { width: min(360px, calc(100vw - 48px)); right: calc(max(24px, env(safe-area-inset-right)) - 10px); bottom: calc(max(20px, env(safe-area-inset-bottom)) - 10px); border-radius: 12px; }
 .hand-camera .hand-fingers { top: 10px; gap: 5px; }
 .hand-camera .hand-fingers span { padding: 3px 7px; font-size: 11px; }
-.hand-camera .hand-gesture { bottom: 10px; padding: 4px 12px; font-size: 13px; }
+/* The gesture chip moves left, level with the button, so the two never cover each other. */
+.hand-camera .hand-gesture { left: 10px; bottom: 17px; translate: none; max-width: calc(100% - 145px); padding: 4px 12px; font-size: 13px; }
 
 /* The same engraved visual language carries through the collection and story. */
 .collection-progress { display: flex; align-items: center; gap: 20px; padding: 24px 0; font-size: 10px; color: #bcacd0; }
@@ -238,11 +241,12 @@ p.section-eyebrow { margin: 0 0 5px; }
     .hand-control-button > span:not(.hand-control-dot) { display: none; }
     .hand-control-button > svg { width: 19px; height: 19px; }
     .hand-control-dot { position: absolute; top: 8px; right: 8px; margin: 0; }
-    .hand-camera { bottom: calc(max(16px, env(safe-area-inset-bottom)) + 56px); width: 124px; right: max(16px, env(safe-area-inset-right)); }
+    /* The icon button sits over the preview's corner here too; the chip rides above it. */
+    .hand-camera { bottom: calc(max(16px, env(safe-area-inset-bottom)) - 6px); width: 124px; right: calc(max(16px, env(safe-area-inset-right)) - 6px); }
     .hand-camera .hand-fingers { gap: 2px; top: 4px; left: 3px; right: 3px; }
     .hand-camera .hand-fingers span { padding: 1px 2px; font-size: 7px; }
-    .hand-camera .hand-gesture { bottom: 4px; padding: 2px 7px; font-size: 9px; }
-    .hand-status { bottom: calc(max(16px, env(safe-area-inset-bottom)) + 159px); right: max(16px, env(safe-area-inset-right)); max-width: calc(100vw - 32px); font-size: 11px; }
+    .hand-camera .hand-gesture { left: 50%; bottom: 54px; translate: -50% 0; max-width: calc(100% - 8px); padding: 2px 7px; font-size: 9px; }
+    .hand-status { bottom: calc(max(16px, env(safe-area-inset-bottom)) + 97px); right: max(16px, env(safe-area-inset-right)); max-width: calc(100vw - 32px); font-size: 11px; }
     .spread-card { width: min(33vw, 140px); }
     .spread-card.card-slot-0-5 { --tx: -21vw; }
     .spread-card.card-slot-1-5 { --tx: -10.5vw; }
