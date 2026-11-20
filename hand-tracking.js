@@ -45,6 +45,10 @@ const DRAG_START_PX = 24;
 const PINCH_START_DISTANCE = 0.48;
 const PINCH_RELEASE_DISTANCE = 0.56;
 const FIST_HOLD_MS = 480;
+// Fist = every finger folded: fingertip-to-knuckle distance under this share of the finger's
+// length (lower to enter, higher to stay so the hold timer survives landmark jitter).
+const FIST_FOLD_ENTER = 0.6;
+const FIST_FOLD_STAY = 0.7;
 // Thumb, index and middle tips gathered within this many palm widths start a page swipe.
 const SWIPE_GROUP_START = 0.6;
 const SWIPE_GROUP_RELEASE = 0.8;
@@ -473,7 +477,24 @@ function goBackInSite() {
     if (history.length > 1) history.back();
 }
 
-function detectFist(hand) {
+function distance3(a, b) {
+    return Math.hypot(a.x - b.x, a.y - b.y, (a.z || 0) - (b.z || 0));
+}
+
+// A fist folds every fingertip back toward its knuckle (about 0.4-0.6 of the finger's length);
+// a pinch keeps the index reaching out to meet the thumb (0.65 and up). Measured on the 3D world
+// landmarks, so it holds whichever way the fist faces the camera, and a thumb resting on the
+// curled index no longer reads as a pinch. Returns null when no world landmarks are available.
+function isFoldedFist(world) {
+    if (!world || world.length < 21) return null;
+    const limit = fistStartedAt ? FIST_FOLD_STAY : FIST_FOLD_ENTER;
+    return [[5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16], [17, 18, 19, 20]].every(([knuckle, pip, dip, tip]) => {
+        const length = distance3(world[knuckle], world[pip]) + distance3(world[pip], world[dip]) + distance3(world[dip], world[tip]);
+        return length > 0 && distance3(world[knuckle], world[tip]) / length < limit;
+    });
+}
+
+function detectFist(hand, folded = null) {
     const now = performance.now();
     const wrist = hand[0];
     const fingerPairs = [[8, 6], [12, 10], [16, 14], [20, 18]];
@@ -482,7 +503,7 @@ function detectFist(hand) {
         const joint = hand[jointIndex];
         return Math.hypot(tip.x - wrist.x, tip.y - wrist.y) < Math.hypot(joint.x - wrist.x, joint.y - wrist.y) * 1.06;
     }).length;
-    const isFist = curledFingers >= 4;
+    const isFist = folded ?? curledFingers >= 4;
 
     if (!isFist) {
         fistStartedAt = 0;
@@ -623,12 +644,14 @@ function trackFrame() {
             const pinchY = (index.y + thumb.y) / 2;
             const x = (1 - pinchX) * window.innerWidth;
             const y = pinchY * window.innerHeight;
-            // The three-finger swipe outranks the plain pinch, which outranks the fist.
-            const isSwipeGroup = updateSwipeGroup(hand, palmWidth);
+            // A fully folded hand is a fist even when the thumb rests on the curled index.
+            const folded = isFoldedFist(result.worldLandmarks?.[0]);
+            // Otherwise the three-finger swipe outranks the plain pinch, which outranks the fist.
+            const isSwipeGroup = folded ? false : updateSwipeGroup(hand, palmWidth);
             // A pinch often curls the other fingers and can resemble a fist. Give the
             // index gesture priority while the thumb and index are near each other.
-            const isIndexGesturePose = isSwipeGroup || indexPinchDistance < 0.72 || snapArmedAt > 0 || pinching;
-            const isFist = isIndexGesturePose ? false : detectFist(hand);
+            const isIndexGesturePose = !folded && (isSwipeGroup || indexPinchDistance < 0.72 || snapArmedAt > 0 || pinching);
+            const isFist = isIndexGesturePose ? false : detectFist(hand, folded);
             const indexGesture = isSwipeGroup
                 ? { isActive: false, didClick: false }
                 : updateIndexGesture(hand, palmWidth, x, y, isFist);
