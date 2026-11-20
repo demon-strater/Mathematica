@@ -322,15 +322,62 @@ p.section-eyebrow { margin: 0 0 5px; }
     }
 }
 
-/* Full-screen desktops (Full HD and larger): lift the 1440×900 caps so the header spans the
-   screen and the stage, orbit, pack and dealt cards grow with the height instead of leaving
-   an empty band below the Open button. Stage height = viewport minus header and controls. */
+/* Full-screen laptops and desktops (Full HD and larger). The interface was drawn for about
+   1440×900; on a 1920×1080 laptop at 100% scaling its 7-15px type and buttons read as tiny.
+   --u is one design pixel scaled to the screen (1px at 1536×760, 1.25px at 1920×1080), so the
+   header, headings, buttons and tier list grow in proportion. Text sized in rem (About, card
+   details, hand-tracking messages) follows the root size. The stage gets the height left over. */
 @media (min-width: 1600px) and (min-height: 900px) {
+    :root { --u: min(100vw / 1536, 100vh / 760); }
+    html { font-size: calc(16 * var(--u)); }
     .app-shell { width: min(2400px, calc(100% - 8vw)); }
-    .card-stage { height: calc(100svh - 263px); }
-    .celestial-orbit { width: min(48vw, calc((100svh - 263px) * .9)); }
-    .booster-pack { width: min(28vw, calc((100svh - 263px) * .47)); }
+
+    .hero-copy { min-height: calc(80 * var(--u)); gap: calc(32 * var(--u)); }
+    .brand-lockup { gap: calc(15 * var(--u)); }
+    .brand-seal { width: calc(43 * var(--u)); height: calc(43 * var(--u)); }
+    .brand-seal svg { width: calc(29 * var(--u)); height: calc(29 * var(--u)); }
+    .brand-eyebrow { margin-bottom: calc(6 * var(--u)); font-size: calc(7 * var(--u)); }
+    .glitch { font-size: calc(30 * var(--u)); }
+    .page-nav { gap: calc(24 * var(--u)); }
+    .page-tab { gap: calc(8 * var(--u)); min-height: calc(48 * var(--u)); padding: calc(4 * var(--u)) calc(10 * var(--u)) 0; font-size: calc(11 * var(--u)); }
+    .nav-index { font-size: calc(10 * var(--u)); }
+    .archive-counter { gap: calc(12 * var(--u)); }
+    .archive-counter > svg { width: calc(21 * var(--u)); height: calc(21 * var(--u)); }
+    .archive-counter div > span { font-size: calc(8 * var(--u)); }
+    .archive-counter strong { font-size: calc(21 * var(--u)); }
+    .archive-counter small { font-size: calc(13 * var(--u)); }
+
+    .page-stack { margin-top: calc(8 * var(--u)); }
+    .chapter-heading { gap: calc(16 * var(--u)); }
+    .chapter-number { font-size: calc(28 * var(--u)); }
+    .panel-title { font-size: calc(15 * var(--u)); }
+    .section-eyebrow { font-size: calc(8 * var(--u)); }
+    .edition-tag { gap: calc(10 * var(--u)); font-size: calc(8 * var(--u)); }
+    .edition-tag > span { font-size: calc(20 * var(--u)); }
+
+    .card-stage { height: calc(100svh - 263 * var(--u)); }
+    .celestial-orbit { width: min(48vw, calc((100svh - 263 * var(--u)) * .9)); }
+    .booster-pack { width: min(28vw, calc((100svh - 263 * var(--u)) * .47)); }
     .spread-fan .spread-card { --fan-card-width: clamp(130px, min(19cqw, (100cqh - 40px) / 2), 380px); }
+    .stage-guide { width: calc(165 * var(--u)); }
+    .stage-guide > .section-eyebrow { font-size: calc(7 * var(--u)); }
+    .stage-guide ol { padding: calc(12 * var(--u)) 0; }
+    .stage-guide li { gap: calc(15 * var(--u)); height: calc(40 * var(--u)); font-size: calc(12 * var(--u)); }
+    .stage-guide li > span { width: calc(22 * var(--u)); font-size: calc(9 * var(--u)); }
+    .stage-guide i { width: calc(4 * var(--u)); height: calc(4 * var(--u)); }
+    .stage-guide p { padding-top: calc(14 * var(--u)); font-size: calc(13 * var(--u)); }
+    .ritual-caption { margin-top: calc(30 * var(--u)); }
+    .archive-action { width: calc(164 * var(--u)); height: calc(58 * var(--u)); padding: 0 calc(30 * var(--u)); font-size: calc(13 * var(--u)); }
+    .archive-action-open { width: calc(196 * var(--u)); height: calc(60 * var(--u)); font-size: calc(14 * var(--u)); }
+
     .catalog-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-    .about-layout { min-height: calc(100svh - 270px); }
+    .collection-progress { gap: calc(20 * var(--u)); padding: calc(24 * var(--u)) 0; font-size: calc(10 * var(--u)); }
+    .collection-progress > span:last-child { font-size: calc(7 * var(--u)); }
+    .legend-row .rarity-chip { padding: calc(5 * var(--u)) calc(8 * var(--u)); font-size: calc(8 * var(--u)); }
+
+    .about-layout { min-height: calc(100svh - 270 * var(--u)); }
+    .about-story h3 { font-size: calc(40 * var(--u)); }
+    .about-story > p:not(.about-eyebrow) { max-width: calc(680 * var(--u)); font-size: calc(14 * var(--u)); }
+    .creator-note { max-width: calc(680 * var(--u)); }
+    .about-qr { width: min(calc(220 * var(--u)), 100%); }
 }

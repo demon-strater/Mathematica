@@ -65,7 +65,7 @@ const GESTURE_LABELS = {
     point: "가리키는 중",
     pinch: "집는 중 · 놓으면 클릭",
     drag: "드래그 중",
-    fist: "주먹 · 유지하면 뒤로",
+    fist: "주먹 · 유지하면 새 팩으로",
     swipe: "세 손가락 · 좌우로 넘기기",
     scroll: "손바닥 · 위아래로 스크롤",
 };
@@ -459,22 +459,25 @@ function completePendingClick() {
     return Boolean(shouldClick);
 }
 
-function goBackInSite() {
+// Fist: from anywhere, close the card modal, return to Pack Opening and set out a sealed pack.
+function returnToSealedPack() {
     const modal = document.getElementById("cardModal");
     if (modal && !modal.classList.contains("hidden")) {
         document.getElementById("closeModalButton")?.click();
-        return;
     }
 
     const currentPage = document.getElementById("pageStack")?.dataset.page || PAGE_ORDER[0];
-    const currentIndex = PAGE_ORDER.indexOf(currentPage);
-    const previousPage = PAGE_ORDER[currentIndex - 1];
-    if (previousPage) {
-        document.querySelector(`[data-page-target="${previousPage}"]`)?.click();
-        return;
+    if (currentPage !== "opening") {
+        document.querySelector('[data-page-target="opening"]')?.click();
     }
 
-    if (history.length > 1) history.back();
+    // A pack that is torn or already dealt is swapped for a fresh one; a sealed pack stays as is.
+    const pack = document.getElementById("ripPackButton");
+    const isRevealed = document.querySelector(".pack-panel")?.classList.contains("has-revealed");
+    const newPackButton = document.getElementById("newPackButton");
+    if ((isRevealed || pack?.dataset.ripState !== "sealed") && newPackButton && !newPackButton.disabled) {
+        newPackButton.click();
+    }
 }
 
 function distance3(a, b) {
@@ -516,8 +519,8 @@ function detectFist(hand, folded = null) {
     if (!fistStartedAt) fistStartedAt = now;
     if (!fistTriggered && !pinching && now - fistStartedAt >= FIST_HOLD_MS) {
         fistTriggered = true;
-        goBackInSite();
-        flashGesture("뒤로 가기");
+        returnToSealedPack();
+        flashGesture("새 팩으로");
     }
     return true;
 }
@@ -738,7 +741,7 @@ async function startHandControl() {
         button.setAttribute("aria-pressed", "true");
         button.setAttribute("aria-label", "카메라 끄기");
         // Brief how-to that fades after 3 seconds; the camera preview keeps showing gestures live.
-        setStatus("검지+엄지를 짧게 모으면 클릭 · 모은 채 움직이면 드래그 · 엄지+검지+중지를 모아 좌우로 움직이면 페이지 전환 · 손바닥을 펴고 위아래로 움직이면 스크롤 · 주먹을 쥐면 뒤로 가기", false, 3000);
+        setStatus("검지+엄지를 짧게 모으면 클릭 · 모은 채 움직이면 드래그 · 엄지+검지+중지를 모아 좌우로 움직이면 페이지 전환 · 손바닥을 펴고 위아래로 움직이면 스크롤 · 주먹을 쥐면 새 팩으로 돌아가기", false, 3000);
         animationFrame = requestAnimationFrame(trackFrame);
     } catch (error) {
         console.error("Hand tracking could not start", error);
